@@ -6,10 +6,6 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
-JVM_ARCH = ""
-JVM_CHECKSUM = ""
-JVM_RDEPENDS = ""
-JVM_ARCH:aarch64 = "aarch64"
 JVM_CHECKSUM:aarch64 = "1fe4b20d808f393422610818711c728331992a4455eeeb061d3d05b45412771d"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
@@ -22,7 +18,6 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_ARCH:arm = "arm"
 JVM_CHECKSUM:arm = "cb754b055177381f9f6852b7e5469904a15edddd7f8e136043c28b1e33aee47c"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
@@ -36,7 +31,6 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_ARCH:x86_64 = "x64"
 JVM_CHECKSUM:x86_64 = "32dcf760664f93531594b72ce9226e9216567de5705a23c9ff5a77c797948054"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
@@ -52,7 +46,17 @@ JVM_RDEPENDS:x86_64 = " \
 
 RDEPENDS:${PN} = "${JVM_RDEPENDS}"
 
-SRC_URI = "https://github.com/adoptium/temurin11-binaries/releases/download/jdk-11.0.19%2B7/OpenJDK11U-jre_${JVM_ARCH}_linux_hotspot_11.0.19_7.tar.gz;subdir=${BPN}-${PV};striplevel=1"
+API_RELEASE_NAME = "jdk-${PV}"
+API_OS = "linux"
+API_ARCH:aarch64 = "aarch64"
+API_ARCH:arm = "arm"
+API_ARCH:x86_64 = "x64"
+API_IMAGE_TYPE = "jre"
+API_JVM_IMPL = "hotspot"
+API_HEAP_SIZE ?= "normal"
+API_VENDOR = "eclipse"
+
+SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1"
 SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
 
 libdir_jre = "${libdir}/jvm/openjdk-11-jre"
