@@ -1,5 +1,4 @@
-SUMMARY = "Java Runtime Environment for Java 8 via Eclipse Temurin"
-DESCRIPTION = "JRE for Java 8 via Eclipse Temurin"
+SUMMARY = "Prebuilt OpenJDK JRE for Java 11 offered by Adoptium."
 HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
