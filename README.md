@@ -19,6 +19,15 @@ that the binaries are compatible implementations of the Java specification.
   branch: kirkstone
 
 
+## Supported Versions
+
+| JVM / Architecture | arm | aarch64 | x64 |
+|--------------------|-----|---------|-----|
+| JRE 8              | x   | x       | x   |
+| JRE 11             | x   | x       | x   |
+| JRE 17             | x   | x       | x   |
+
+
 ## Patches
 
 Please submit any patches against the meta-openjdk-temurin layer via pull requests
