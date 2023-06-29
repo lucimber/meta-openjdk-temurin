@@ -2,9 +2,7 @@ name: Bitbake (kirkstone)
 
 on:
   push:
-    branches: [ "main", "gh-actions" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: [ "gh-actions" ]
 
 jobs:
   build:
@@ -30,10 +28,16 @@ jobs:
           repository: openembedded/bitbake
           ref: 2022-04.10-kirkstone
           path: oe-core/bitbake
-      - name: Checkout sources
+      - name: Checkout sources of this project
         uses: actions/checkout@v3
         with:
           path: oe-core/meta-openjdk-temurin
+      - name: Replace config of build-environment
+        run: |
+          cd oe-core
+          source oe-init-build-env build
+          mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-buildenv-local.conf \
+            conf/local.conf
       - name: Add layer to build-environment
         run: |
           cd oe-core
