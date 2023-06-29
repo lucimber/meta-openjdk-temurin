@@ -6,6 +6,10 @@ on:
 
 jobs:
   build:
+    strategy:
+      matrix:
+        machine: [qemuarm, qemuarm64, qemux86-64]
+        recipe: [openjdk-8-jre, openjdk-11-jre, openjdk-17-jre]
     runs-on: ubuntu-latest
     steps:
       - name: Install software required by OpenEmbedded
@@ -49,12 +53,12 @@ jobs:
         with:
           path: |
             oe-core/build/bitbake-sstate
-          key: ${{ runner.os }}-sstate
-      - name: Build OpenJDK 8 JRE with Bitbake
+          key: kirkstone-${{ matrix.machine }}-sstate
+      - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
           source oe-init-build-env build
-          bitbake openjdk-8-jre
+          MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
       - name: Save sstate
         id: cache-sstate-save
         uses: actions/cache/save@v3
