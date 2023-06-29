@@ -43,8 +43,22 @@ jobs:
           cd oe-core
           source oe-init-build-env build
           bitbake-layers add-layer ../meta-openjdk-temurin
+      - name: Restore cached sstate
+        id: cache-sstate-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            oe-core/build/bitbake-sstate
+          key: ${{ runner.os }}-sstate
       - name: Build OpenJDK 8 JRE with Bitbake
         run: |
           cd oe-core
           source oe-init-build-env build
           bitbake openjdk-8-jre
+      - name: Save sstate
+        id: cache-sstate-save
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            oe-core/build/bitbake-sstate
+          key: ${{ steps.cache-sstate-restore.outputs.cache-primary-key }}
