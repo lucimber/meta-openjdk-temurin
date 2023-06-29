@@ -10,29 +10,35 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Install software required by OpenEmbedded
+        run: |
+          sudo apt-get update
+          sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib \
+            build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
+            xz-utils debianutils iputils-ping
       - name: Checkout OE-Core
         uses: actions/checkout@v3
         with:
           repository: openembedded/openembedded-core
           ref: kirkstone
-          path: oe-core
+          path: ../oe-core
       - name: Checkout Bitbake
         uses: actions/checkout@v3
         with:
           repository: openembedded/bitbake
           ref: 2022-04.10-kirkstone
-          path: oe-core/bitbake
+          path: ../oe-core/bitbake
       - name: Checkout sources
         uses: actions/checkout@v3
         with:
-          path: oe-core/meta-openjdk-temurin
+          path: ../oe-core/meta-openjdk-temurin
       - name: Add layer to build-environment
         run: |
-          cd oe-core
+          cd ../oe-core
           source oe-init-build-env build
           bitbake-layers add-layer ../meta-openjdk-temurin
       - name: Build OpenJDK 8 JRE with Bitbake
         run: |
-          cd oe-core
+          cd ../oe-core
           source oe-init-build-env build
           bitbake openjdk-8-jre
