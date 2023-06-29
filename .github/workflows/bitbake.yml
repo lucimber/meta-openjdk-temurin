@@ -48,22 +48,24 @@ jobs:
           cd oe-core
           source oe-init-build-env build
           bitbake-layers add-layer ../meta-openjdk-temurin
-      - name: Restore cached sstate
-        id: cache-sstate-restore
+      - name: Restore cached downloads and sstate
+        id: cache-bitbake-restore
         uses: actions/cache/restore@v3
         with:
           path: |
-            oe-core/build/bitbake-sstate
-          key: kirkstone-${{ matrix.machine }}-sstate
+            oe-core/build/downloads
+            oe-core/build/sstate-cache
+          key: bitbake_downloads-and-sstate
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
           source oe-init-build-env build
           MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
-      - name: Save sstate
-        id: cache-sstate-save
+      - name: Save downloads and sstate
+        id: cache-bitbake-save
         uses: actions/cache/save@v3
         with:
           path: |
-            oe-core/build/bitbake-sstate
-          key: ${{ steps.cache-sstate-restore.outputs.cache-primary-key }}
+            oe-core/build/downloads
+            oe-core/build/sstate-cache
+          key: ${{ steps.cache-bitbake-restore.outputs.cache-primary-key }}
