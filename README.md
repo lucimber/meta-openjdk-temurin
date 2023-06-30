@@ -1,47 +1,45 @@
 # README
-
 This layer provides support for the JVMs of the Eclipse Temurin Project for use with
 OpenEmbedded and/or Yocto Project build systems. 
 
-
 ## Why prebuilt binaries?
-
 The process of building a JVM binary takes a long time and maintaining it
 (e.g. applying patches and testing it) is a lot of work.
-The Eclipse Temurin Project makes sure that the produced binaries pass
+The [Eclipse Temurin Project](https://projects.eclipse.org/projects/adoptium.temurin) makes sure that the produced binaries pass
 the relevant Oracle Java Compatibility Kit (JCK), to demonstrate
 that the binaries are compatible implementations of the Java specification.
 
-
 ## Dependencies
+* git://git.openembedded.org/openembedded-core
+* git://git.openembedded.org/bitbake
 
-  URI: https://git.yoctoproject.org/poky/
-  branch: kirkstone
+If you're using the Yocto Project's reference distribution called Poky,
+then you're already set up. Just add this layer to your build configuration.
+Please remember to use a branch that is matching with the Codename of your build.
+See https://wiki.yoctoproject.org/wiki/Releases for Codenames.
 
+## Supported Codenames
+Each codename of OE/Yocto, that is supported by this layer, has a corresponding branch in this repository.
+See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
 
 ## Supported Versions
-
-| JVM / Architecture | arm | aarch64 | x64 |
-|--------------------|-----|---------|-----|
-| JRE 8              | x   | x       | x   |
-| JRE 11             | x   | x       | x   |
-| JRE 17             | x   | x       | x   |
-
-
-## Patches
-
-Please submit any patches against the meta-openjdk-temurin layer via pull requests
-on [the project page on GitHub](https://github.com/lucimber/meta-openjdk-temurin).
-
+| JVM / Architecture | arm | aarch64 | x64 | x86 | s390x |
+|--------------------|-----|---------|-----|-----|-------|
+| JRE 8              | ✅  | ✅      | ✅  | ❌  | ❌   |
+| JRE 11             | ✅  | ✅      | ✅  | ❌  | ❌   |
+| JRE 17             | ✅  | ✅      | ✅  | ❌  | ❌   |
 
 ## Adding the meta-openjdk-temurin layer to your build
-
-Run 'bitbake-layers add-layer meta-openjdk-temurin'
-
+* Run 'git clone -b name-of-branch https://github.com/lucimber/meta-openjdk-temurin.git'
+* Run 'bitbake-layers add-layer meta-openjdk-temurin'
 
 ## Participation
 Participation is welcome and endorsed by the chosen license
 and a simplified contributor agreement.
+
+### Patches
+Please submit any patches against the meta-openjdk-temurin layer via pull requests
+on [the project page on GitHub](https://github.com/lucimber/meta-openjdk-temurin).
 
 ### Contributor Agreement
 As the chosen open source license implicitly serves
@@ -72,18 +70,14 @@ a Signed-off-by line to commit messages.
     
     Signed-off-by: Peter Peterson <pp@example.org>
 
-
 ## Trademarks
-
 Eclipse Temurin is a trademark of the Eclipse Foundation. Eclipse, and the
 Eclipse Logo are registered trademarks of the Eclipse Foundation.
 
 Java and all Java-based trademarks are trademarks of Oracle Corporation in
 the United States, other countries, or both.
 
-
 ## License
-
 meta-openjdk-temurin - A software layer as defined by the Yocto Project Layer Model.
 
 Copyright (C) 2023  Lucimber UG
