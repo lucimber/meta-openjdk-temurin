@@ -40,32 +40,41 @@ jobs:
       - name: Replace config of build-environment
         run: |
           cd oe-core
-          source oe-init-build-env build
+          source oe-init-build-env build > /dev/null 2>&1
           mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-buildenv-local.conf \
             conf/local.conf
       - name: Add layer to build-environment
         run: |
           cd oe-core
-          source oe-init-build-env build
+          source oe-init-build-env build > /dev/null 2>&1
           bitbake-layers add-layer ../meta-openjdk-temurin
-      - name: Restore cached downloads and sstate
-        id: cache-bitbake-restore
+      - name: Restore cached downloads of Bitbake
+        id: cache-bitbake-downloads-restore
+        uses: actions/cache/restore@v3
+        with:
+          path: oe-core/build/downloads
+          key: bitbake-downloads
+      - name: Restore cached sstate of Bitbake
+        id: cache-bitbake-sstate-restore
         uses: actions/cache/restore@v3
         with:
           path: |
-            oe-core/build/downloads
             oe-core/build/sstate-cache
-          key: bitbake_downloads-and-sstate
+          key: bitbake-sstate
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
-          source oe-init-build-env build
+          source oe-init-build-env build > /dev/null 2>&1
           MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
-      - name: Save downloads and sstate
-        id: cache-bitbake-save
+      - name: Save downloads of Bitbake
+        id: cache-bitbake-downloads-save
         uses: actions/cache/save@v3
         with:
-          path: |
-            oe-core/build/downloads
-            oe-core/build/sstate-cache
-          key: ${{ steps.cache-bitbake-restore.outputs.cache-primary-key }}
+          path: oe-core/build/downloads
+          key: ${{ steps.cache-bitbake-downloads-restore.outputs.cache-primary-key }}
+      - name: Save sstate of Bitbake
+        id: cache-bitbake-sstate-save
+        uses: actions/cache/save@v3
+        with:
+          path: oe-core/build/sstate-cache
+          key: ${{ steps.cache-bitbake-sstate-restore.outputs.cache-primary-key }}
