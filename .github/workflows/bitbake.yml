@@ -1,4 +1,4 @@
-name: Bitbake (kirkstone)
+name: Bitbake
 
 on:
   push:
@@ -53,14 +53,13 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: oe-core/build/downloads
-          key: bitbake-downloads
+          key: bitbake-downloads_${{ matrix.machine }}
       - name: Restore cached sstate of Bitbake
         id: cache-bitbake-sstate-restore
         uses: actions/cache/restore@v3
         with:
-          path: |
-            oe-core/build/sstate-cache
-          key: bitbake-sstate
+          path: oe-core/build/sstate-cache
+          key: bitbake-sstate_${{ matrix.machine }}
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
