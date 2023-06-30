@@ -1,8 +1,10 @@
-name: Bitbake
+name: Bitbake (main)
 
 on:
   push:
-    branches: [ "gh-actions" ]
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -10,7 +12,7 @@ jobs:
       matrix:
         machine: [qemuarm, qemuarm64, qemux86-64]
         recipe: [openjdk-8-jre, openjdk-11-jre, openjdk-17-jre]
-      max-parallel: 1
+      max-parallel: 2
     runs-on: ubuntu-latest
     steps:
       - name: Install software required by OpenEmbedded
