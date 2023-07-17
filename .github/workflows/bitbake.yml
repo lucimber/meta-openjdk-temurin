@@ -1,10 +1,10 @@
-name: Bitbake (main)
+name: Bitbake (kirkstone)
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "kirkstone" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "kirkstone" ]
 
 jobs:
   build:
