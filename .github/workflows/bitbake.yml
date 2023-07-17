@@ -10,9 +10,9 @@ jobs:
   build:
     strategy:
       matrix:
-        machine: [qemuarm, qemuarm64, qemux86-64]
         recipe: [openjdk-8-jre, openjdk-11-jre, openjdk-17-jre]
-      max-parallel: 2
+        machine: [qemuarm, qemuarm64, qemux86-64]
+      max-parallel: 3
     runs-on: ubuntu-latest
     steps:
       - name: Install software required by OpenEmbedded
