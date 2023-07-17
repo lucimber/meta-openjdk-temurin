@@ -1,10 +1,7 @@
 name: Bitbake
+run-name: Bitbake on branch <${{ github.ref_name }}> by @${{ github.actor }}
 
-on:
-  push:
-    branches: [ "main", "kirkstone", "dunfell" ]
-  pull_request:
-    branches: [ "main", "kirkstone", "dunfell" ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -27,13 +24,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: openembedded/openembedded-core
-          ref: kirkstone
+          ref: ${{ github.ref_name }}
           path: oe-core
       - name: Checkout Bitbake
         uses: actions/checkout@v3
         with:
           repository: openembedded/bitbake
-          ref: 2022-04.10-kirkstone
+          ref: master
           path: oe-core/bitbake
       - name: Checkout sources of this project
         uses: actions/checkout@v3
