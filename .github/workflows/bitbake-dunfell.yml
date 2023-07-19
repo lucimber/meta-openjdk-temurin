@@ -57,7 +57,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: oe-core/build/sstate-cache
-          key: bitbake-sstate_${{ matrix.machine }}
+          key: bitbake-sstate_dunfell_${{ matrix.machine }}
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
