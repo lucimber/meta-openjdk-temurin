@@ -1,6 +1,7 @@
 name: Bitbake (main)
 
-push:
+on:
+  push:
     branches:
       - main
   pull_request:
