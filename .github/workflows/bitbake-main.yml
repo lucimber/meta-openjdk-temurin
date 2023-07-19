@@ -1,7 +1,11 @@
-name: Bitbake
-run-name: Bitbake on branch <${{ github.ref_name }}> by @${{ github.actor }}
+name: Bitbake (main)
 
-on: [push, pull_request]
+push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
@@ -24,13 +28,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: openembedded/openembedded-core
-          ref: ${{ github.ref_name }}
+          ref: mickledore
           path: oe-core
       - name: Checkout Bitbake
         uses: actions/checkout@v3
         with:
           repository: openembedded/bitbake
-          ref: master
+          ref: '2.4'
           path: oe-core/bitbake
       - name: Checkout sources of this project
         uses: actions/checkout@v3
@@ -40,7 +44,7 @@ jobs:
         run: |
           cd oe-core
           source oe-init-build-env build > /dev/null 2>&1
-          mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-buildenv-local.conf \
+          mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-main-local.conf \
             conf/local.conf
       - name: Add layer to build-environment
         run: |
@@ -58,7 +62,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: oe-core/build/sstate-cache
-          key: bitbake-sstate_${{ matrix.machine }}
+          key: bitbake-sstate_main_${{ matrix.machine }}
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
