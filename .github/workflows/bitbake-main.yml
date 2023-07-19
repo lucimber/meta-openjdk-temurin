@@ -64,6 +64,7 @@ jobs:
           MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
       - name: Save sstate of Bitbake
         id: cache-bitbake-sstate-save
+        if: steps.cache-bitbake-sstate-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v3
         with:
           path: oe-core/build/sstate-cache
