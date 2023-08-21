@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
-JVM_CHECKSUM:aarch64 = "1fe4b20d808f393422610818711c728331992a4455eeeb061d3d05b45412771d"
+JVM_CHECKSUM:aarch64 = "45e190920fb3ec61ee5213a7bd98553abf2ae7692eb9daa504fcdc9d59a7cfc4"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -18,7 +18,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "cb754b055177381f9f6852b7e5469904a15edddd7f8e136043c28b1e33aee47c"
+JVM_CHECKSUM:arm = "1e2a02364084b2d054e88a871f3efaa4450ae4f087b8f806fd95c15d5affcc7b"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -31,7 +31,7 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "32dcf760664f93531594b72ce9226e9216567de5705a23c9ff5a77c797948054"
+JVM_CHECKSUM:x86_64 = "ffb070c26ea22771f78769c569c9db3412e6486434dc6df1fd3c3438285766e7"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
