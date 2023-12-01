@@ -18,7 +18,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "877953bfabcdbcd000c11364d806456ca579a921085de2ca942280ebe168cac2"
+JVM_CHECKSUM:arm = "b92fb3972372b5d1f9fb51815def903105722b747f680b7ecf2ba2ba863ab156"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -31,7 +31,7 @@ JVM_RDEPENDS:arm = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "91d31027da0d985be3549714389593d9e0da3da5057d87e3831c7c538b9a2a0f"
+JVM_CHECKSUM:x86_64 = "1fad165cc243e8db1b9cf226134acdfe3dc5919cd98c5fd9210de3cf9edeabd7"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
