@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
+JVM_SUBDIR:aarch64 = "jdk8u392-b08-jre"
 JVM_CHECKSUM:aarch64 = "37b997f12cd572da979283fccafec9ba903041a209605b50fcb46cc34f1a9917"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
@@ -18,6 +19,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
+JVM_SUBDIR:arm = "jdk8u392-b08-aarch32-20231020-jre"
 JVM_CHECKSUM:arm = "877953bfabcdbcd000c11364d806456ca579a921085de2ca942280ebe168cac2"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
@@ -31,6 +33,7 @@ JVM_RDEPENDS:arm = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
+JVM_SUBDIR:x86_64 = "jdk8u392-b08-jre"
 JVM_CHECKSUM:x86_64 = "91d31027da0d985be3549714389593d9e0da3da5057d87e3831c7c538b9a2a0f"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
@@ -56,8 +59,10 @@ API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
 API_VENDOR = "eclipse"
 
-SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1"
+SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV}"
 SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
+
+S = "${WORKDIR}/${BPN}-${PV}/${JVM_SUBDIR}"
 
 libdir_jre = "${libdir}/jvm/openjdk-8-jre"
 
