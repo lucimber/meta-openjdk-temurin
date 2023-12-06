@@ -6,10 +6,11 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
-JVM_CHECKSUM:aarch64 = "42525ae2951a669803c75ba5987dc8333c664dae50c3e12174f736a506b4aa15"
+JVM_SUBDIR:aarch64 = "jdk-17.0.9+9-jre"
+JVM_CHECKSUM:aarch64 = "05b192f81ed478178ba953a2a779b67fc5a810acadb633ad69f8c4412399edb8"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
-  freetype (>= 2.11) \
+  freetype (>= 2.13) \
   glibc (>= 2.17) \
   libx11 (>= 1.7) \
   libxext (>= 1.3) \
@@ -18,10 +19,11 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "20fa06a86e1647f5997c511dd19e4d1c9839d2500f835973fc9b3c86b87030a0"
+JVM_SUBDIR:arm = "jdk-17.0.9+9-jre"
+JVM_CHECKSUM:arm = "5ae1f8cae358e41083a6b44f53c6f0daeb657f83c293da6c8733f68278e13703"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
-  freetype (>= 2.11) \
+  freetype (>= 2.13) \
   glibc (>= 2.17) \
   libatomic (>= 1.0) \
   libx11 (>= 1.7) \
@@ -31,10 +33,11 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "dddbb5f817a77445711528a414678806b00b83c92701fe595c50cdb207758ae9"
+JVM_SUBDIR:x86_64 = "jdk-17.0.9+9-jre"
+JVM_CHECKSUM:x86_64 = "c37f729200b572884b8f8e157852c739be728d61d9a1da0f920104876d324733"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
-  freetype (>= 2.11) \
+  freetype (>= 2.13) \
   glibc (>= 2.17) \
   libx11 (>= 1.7) \
   libxext (>= 1.3) \
@@ -56,8 +59,10 @@ API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
 API_VENDOR = "eclipse"
 
-SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1"
+SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV}"
 SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
+
+S = "${WORKDIR}/${BPN}-${PV}/${JVM_SUBDIR}"
 
 libdir_jre = "${libdir}/jvm/openjdk-17-jre"
 
