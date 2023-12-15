@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
+JVM_SUBDIR:aarch64 = "jdk-21.0.1+12-jre"
 JVM_CHECKSUM:aarch64 = "4582c4cc0c6d498ba7a23fdb0a5179c9d9c0d7a26f2ee8610468d5c2954fcf2f"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
@@ -18,6 +19,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.1.4) \
 "
+JVM_SUBDIR:x86_64 = "jdk-21.0.1+12-jre"
 JVM_CHECKSUM:x86_64 = "277f4084bee875f127a978253cfbaad09c08df597feaf5ccc82d2206962279a3"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
@@ -42,8 +44,10 @@ API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
 API_VENDOR = "eclipse"
 
-SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1"
+SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV}"
 SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
+
+S = "${WORKDIR}/${BPN}-${PV}/${JVM_SUBDIR}"
 
 libdir_jre = "${libdir}/jvm/openjdk-21-jre"
 
