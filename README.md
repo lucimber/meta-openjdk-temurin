@@ -28,6 +28,7 @@ See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Code
 | JRE 8              | ✅  | ✅      | ✅  | ❌  | ❌   |
 | JRE 11             | ✅  | ✅      | ✅  | ❌  | ❌   |
 | JRE 17             | ✅  | ✅      | ✅  | ❌  | ❌   |
+| JRE 21             | ❌  | ✅      | ✅  | ❌  | ❌   |
 
 ## Adding the meta-openjdk-temurin layer to your build
 * Run 'git clone -b name-of-branch https://github.com/lucimber/meta-openjdk-temurin.git'
