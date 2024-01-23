@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
+DEPENDS = "patchelf-native"
+
 JVM_CHECKSUM:aarch64 = "8dc527e5c5da62f80ad3b6a2cd7b1789f745b1d90d5e83faba45f7a1d0b6cab8"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
@@ -80,6 +82,13 @@ do_compile[noexec] = "1"
 do_install() {
   install -d ${D}${libdir_jre}
   cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jre}
+
+  LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux-* | sort | head -n1))
+  if [ -n "$LDLINUX" ]; then
+    for i in ${D}${libdir}/jvm/${BPN}/bin/* ; do
+      patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
+    done
+  fi
 }
 
 RPROVIDES:${PN} = "java2-runtime"
