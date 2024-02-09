@@ -8,7 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "8dc527e5c5da62f80ad3b6a2cd7b1789f745b1d90d5e83faba45f7a1d0b6cab8"
+JVM_CHECKSUM:aarch64 = "46e2bff7d5f419ac7c2fad29e78bfacf49ead4a2de1aba73b6329128f6d1f707"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -20,7 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "7c12ca8f195bf719368016a1c3e7f06f8f06e4a573dc3dce0befbe30a388ffa3"
+JVM_CHECKSUM:arm = "a5ab40aa53ecd413a8af738e66855d423e64b5389f876a4825e2cbdb45e9cfb3"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -33,7 +33,7 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "156861bb901ef18759e05f6f008595220c7d1318a46758531b957b0c950ef2c3"
+JVM_CHECKSUM:x86_64 = "3a0fec1b9ef38d6abd86cf11f6001772b086096b6ec2588d2a02f1fa86b2b1de"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
