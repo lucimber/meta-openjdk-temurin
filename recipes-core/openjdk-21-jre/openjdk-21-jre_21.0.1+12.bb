@@ -6,6 +6,8 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
+DEPENDS = "patchelf-native"
+
 JVM_SUBDIR:aarch64 = "jdk-21.0.1+12-jre"
 JVM_CHECKSUM:aarch64 = "4582c4cc0c6d498ba7a23fdb0a5179c9d9c0d7a26f2ee8610468d5c2954fcf2f"
 JVM_RDEPENDS:aarch64 = " \
@@ -70,6 +72,13 @@ do_compile[noexec] = "1"
 do_install() {
   install -d ${D}${libdir_jre}
   cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jre}
+
+  LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux-* | sort | head -n1))
+  if [ -n "$LDLINUX" ]; then
+    for i in ${D}${libdir}/jvm/${BPN}/bin/* ; do
+      patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
+    done
+  fi
 }
 
 RPROVIDES:${PN} = "java2-runtime"
