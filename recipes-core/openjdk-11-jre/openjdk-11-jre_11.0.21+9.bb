@@ -58,8 +58,10 @@ API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
 API_VENDOR = "eclipse"
 
-SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1"
+SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV}"
 SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
+
+S = "${WORKDIR}/${BPN}-${PV}/jdk-11.0.21+9-jre"
 
 libdir_jre = "${libdir}/jvm/openjdk-11-jre"
 
