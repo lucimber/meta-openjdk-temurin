@@ -8,8 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_SUBDIR:aarch64 = "jdk-17.0.9+9-jre"
-JVM_CHECKSUM:aarch64 = "05b192f81ed478178ba953a2a779b67fc5a810acadb633ad69f8c4412399edb8"
+JVM_CHECKSUM:aarch64 = "16080d055da0962fbd6b40f659a98a457cba3efa7ea716d5400cfebe8b935bf0"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -21,8 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_SUBDIR:arm = "jdk-17.0.9+9-jre"
-JVM_CHECKSUM:arm = "5ae1f8cae358e41083a6b44f53c6f0daeb657f83c293da6c8733f68278e13703"
+JVM_CHECKSUM:arm = "0378bdf6769632b182b27ba4e53b17eaefefdbafa3845c15e1bd88a5aeec8442"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -35,8 +33,7 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_SUBDIR:x86_64 = "jdk-17.0.9+9-jre"
-JVM_CHECKSUM:x86_64 = "c37f729200b572884b8f8e157852c739be728d61d9a1da0f920104876d324733"
+JVM_CHECKSUM:x86_64 = "620cc0e7338f2722f3ed076ac65c0fafb575981426bac4e1970860e5e2d048f0"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -64,7 +61,7 @@ API_VENDOR = "eclipse"
 SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV}"
 SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
 
-S = "${WORKDIR}/${BPN}-${PV}/${JVM_SUBDIR}"
+S = "${WORKDIR}/${BPN}-${PV}/jdk-17.0.10+7-jre"
 
 libdir_jre = "${libdir}/jvm/openjdk-17-jre"
 
