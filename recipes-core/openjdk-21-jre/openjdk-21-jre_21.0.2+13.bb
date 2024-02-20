@@ -8,8 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_SUBDIR:aarch64 = "jdk-21.0.1+12-jre"
-JVM_CHECKSUM:aarch64 = "4582c4cc0c6d498ba7a23fdb0a5179c9d9c0d7a26f2ee8610468d5c2954fcf2f"
+JVM_CHECKSUM:aarch64 = "64c78854184c92a4da5cda571c8e357043bfaf03a03434eef58550cc3410d8a4"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -21,8 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.1.4) \
 "
-JVM_SUBDIR:x86_64 = "jdk-21.0.1+12-jre"
-JVM_CHECKSUM:x86_64 = "277f4084bee875f127a978253cfbaad09c08df597feaf5ccc82d2206962279a3"
+JVM_CHECKSUM:x86_64 = "51141204fe01a9f9dd74eab621d5eca7511eac67315c9975dbde5f2625bdca55"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -49,7 +47,7 @@ API_VENDOR = "eclipse"
 SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV}"
 SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
 
-S = "${WORKDIR}/${BPN}-${PV}/${JVM_SUBDIR}"
+S = "${WORKDIR}/${BPN}-${PV}/jdk-${PV}-jre"
 
 libdir_jre = "${libdir}/jvm/openjdk-21-jre"
 
