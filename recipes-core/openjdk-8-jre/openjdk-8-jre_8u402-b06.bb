@@ -8,8 +8,8 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_SUBDIR:aarch64 = "jdk8u392-b08-jre"
-JVM_CHECKSUM:aarch64 = "37b997f12cd572da979283fccafec9ba903041a209605b50fcb46cc34f1a9917"
+JVM_SUBDIR:aarch64 = "jdk8u402-b06-jre"
+JVM_CHECKSUM:aarch64 = "782f842c22fe660c5acbea8c1d7b4e812fe658a9e48cd2e8e776d088c7ab32d3"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -21,8 +21,8 @@ JVM_RDEPENDS:aarch64 = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
-JVM_SUBDIR:arm = "jdk8u392-b08-aarch32-20231020-jre"
-JVM_CHECKSUM:arm = "877953bfabcdbcd000c11364d806456ca579a921085de2ca942280ebe168cac2"
+JVM_SUBDIR:arm = "jdk8u402-b06-aarch32-20240118-jre"
+JVM_CHECKSUM:arm = "d613a775573fc17ee972e62b5120dc34d8cac1810bb352e71bc01980ce3c48a8"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -35,8 +35,8 @@ JVM_RDEPENDS:arm = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
-JVM_SUBDIR:x86_64 = "jdk8u392-b08-jre"
-JVM_CHECKSUM:x86_64 = "91d31027da0d985be3549714389593d9e0da3da5057d87e3831c7c538b9a2a0f"
+JVM_SUBDIR:x86_64 = "jdk8u402-b06-jre"
+JVM_CHECKSUM:x86_64 = "1d8c109e96bdb35ffff667dfb911ce03fb9f0f924048dcc8fdbd45198b263ecd"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
