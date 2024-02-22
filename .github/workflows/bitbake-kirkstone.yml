@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        recipe: [openjdk-8-jre, openjdk-11-jre, openjdk-17-jre]
+        recipe: [openjdk-8-jre, openjdk-11-jre, openjdk-17-jre, openjdk-21-jre]
         machine: [qemuarm, qemuarm64, qemux86-64]
       max-parallel: 3
     runs-on: ubuntu-latest
