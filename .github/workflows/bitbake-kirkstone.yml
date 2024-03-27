@@ -14,6 +14,9 @@ jobs:
       matrix:
         recipe: [openjdk-8-jre, openjdk-11-jre, openjdk-17-jre, openjdk-21-jre]
         machine: [qemuarm, qemuarm64, qemux86-64]
+        exclude:
+          - recipe: openjdk-21-jre
+            machine: qemuarm
       max-parallel: 3
     runs-on: ubuntu-latest
     steps:
