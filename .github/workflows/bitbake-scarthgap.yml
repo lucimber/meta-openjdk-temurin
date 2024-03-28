@@ -48,7 +48,7 @@ jobs:
         run: |
           cd oe-core
           source oe-init-build-env build > /dev/null 2>&1
-          mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-main-local.conf \
+          mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-scarthgap-local.conf \
             conf/local.conf
       - name: Add layer to build-environment
         run: |
