@@ -1,12 +1,12 @@
-name: Bitbake (main)
+name: Bitbake (scarthgap)
 
 on:
   push:
     branches:
-      - main
+      - scarthgap
   pull_request:
     branches:
-      - main
+      - scarthgap
 
 jobs:
   build:
@@ -32,13 +32,13 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: openembedded/openembedded-core
-          ref: mickledore
+          ref: scarthgap
           path: oe-core
       - name: Checkout Bitbake
         uses: actions/checkout@v3
         with:
           repository: openembedded/bitbake
-          ref: '2.4'
+          ref: '2.8'
           path: oe-core/bitbake
       - name: Checkout sources of this project
         uses: actions/checkout@v3
@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: oe-core/build/sstate-cache
-          key: bitbake-sstate_main_${{ matrix.machine }}
+          key: bitbake-sstate_scarthgap_${{ matrix.machine }}
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
