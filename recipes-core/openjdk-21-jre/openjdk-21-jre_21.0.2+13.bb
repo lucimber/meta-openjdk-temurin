@@ -71,7 +71,7 @@ do_install() {
   install -d ${D}${libdir_jre}
   cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jre}
 
-  LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux-* | sort | head -n1))
+  LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
     for i in ${D}${libdir}/jvm/${BPN}/bin/* ; do
       patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
