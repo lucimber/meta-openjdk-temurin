@@ -44,8 +44,17 @@ API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
 API_VENDOR = "eclipse"
 
-SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1"
-SRC_URI[sha256sum] = "${JVM_CHECKSUM}"
+SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};name=binary;downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1"
+SRC_URI[binary.sha256sum] = "${JVM_CHECKSUM}"
+
+# Provide sources of the JVM because of its license.
+ADAPTED_PV_SRC = ""
+python () {
+  import re
+  d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('+', '_'))
+}
+SRC_URI:append = " https://github.com/adoptium/temurin21-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK21U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
+SRC_URI[sources.sha256sum] = "b23e3f90cbe8e83b69a7ce0db6ffd9849967f77b335567f3d732e3e2eb11ec17"
 
 libdir_jre = "${libdir}/jvm/openjdk-21-jre"
 
