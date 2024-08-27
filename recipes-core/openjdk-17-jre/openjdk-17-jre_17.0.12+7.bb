@@ -8,7 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "16080d055da0962fbd6b40f659a98a457cba3efa7ea716d5400cfebe8b935bf0"
+JVM_CHECKSUM:aarch64 = "9dfe4c56463690ae67d22268980d8861eb46b907d7914f8f2e6fc7b25778c8ec"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -20,7 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "0378bdf6769632b182b27ba4e53b17eaefefdbafa3845c15e1bd88a5aeec8442"
+JVM_CHECKSUM:arm = "f093094abe0cb2bb5a255d8180810030321073520541f289926c4682eda76136"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -33,7 +33,7 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "620cc0e7338f2722f3ed076ac65c0fafb575981426bac4e1970860e5e2d048f0"
+JVM_CHECKSUM:x86_64 = "0e8088d7a3a7496faba7ac8787db09dc0264c2bc6f568ea8024fd775a783e13c"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -68,7 +68,7 @@ python () {
   d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('+', '_'))
 }
 SRC_URI:append = " https://github.com/adoptium/temurin17-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK17U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
-SRC_URI[sources.sha256sum] = "111988b009f6856c717a1a55753bd72048adfd637ed8f232aaf6d96ec329a9d4"
+SRC_URI[sources.sha256sum] = "bbc5fe161ea3aad2aad855a7954927d18bbdce1d74d14f2922a85ca50a74fec5"
 
 libdir_jre = "${libdir}/jvm/openjdk-17-jre"
 
