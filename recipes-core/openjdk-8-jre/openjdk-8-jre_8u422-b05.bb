@@ -8,7 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "782f842c22fe660c5acbea8c1d7b4e812fe658a9e48cd2e8e776d088c7ab32d3"
+JVM_CHECKSUM:aarch64 = "8fbefff2c578f73d95118d830347589ddc9aa84510200a5a5001901c2dea4810"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -20,7 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "d613a775573fc17ee972e62b5120dc34d8cac1810bb352e71bc01980ce3c48a8"
+JVM_CHECKSUM:arm = "13bdefdeae6f18bc9c87bba18c853b8b12c5442ce07ff0a3956ce28776d695ff"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -33,7 +33,7 @@ JVM_RDEPENDS:arm = " \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "1d8c109e96bdb35ffff667dfb911ce03fb9f0f924048dcc8fdbd45198b263ecd"
+JVM_CHECKSUM:x86_64 = "0ac516cc1eadffb4cd3cfc9736a33d58ea6a396bf85729036c973482f7c063d9"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.11) \
@@ -68,7 +68,7 @@ python () {
   d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('-', ''))
 }
 SRC_URI:append = " https://github.com/adoptium/temurin8-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK8U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
-SRC_URI[sources.sha256sum] = "60d79189dc23f3e983ba2f3c327f1ffd1da2e6b0305233b39145da66851a2aa9"
+SRC_URI[sources.sha256sum] = "ed95a098f1036b1300d6a6470f77b3445c02d2994e4d6ef8ef991183129cda80"
 
 libdir_jre = "${libdir}/jvm/openjdk-8-jre"
 
