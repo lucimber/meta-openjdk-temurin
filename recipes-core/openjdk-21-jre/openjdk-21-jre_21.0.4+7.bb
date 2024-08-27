@@ -8,7 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "64c78854184c92a4da5cda571c8e357043bfaf03a03434eef58550cc3410d8a4"
+JVM_CHECKSUM:aarch64 = "58845ce4275f3ec74fba075597c8216bb201773da036c4703be8b7b7b457355d"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -20,7 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.1.4) \
 "
-JVM_CHECKSUM:x86_64 = "51141204fe01a9f9dd74eab621d5eca7511eac67315c9975dbde5f2625bdca55"
+JVM_CHECKSUM:x86_64 = "d3affbb011ca6c722948f6345d15eba09bded33f9947d4d67e09723e2518c12a"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -54,7 +54,7 @@ python () {
   d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('+', '_'))
 }
 SRC_URI:append = " https://github.com/adoptium/temurin21-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK21U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
-SRC_URI[sources.sha256sum] = "b23e3f90cbe8e83b69a7ce0db6ffd9849967f77b335567f3d732e3e2eb11ec17"
+SRC_URI[sources.sha256sum] = "ba38841876aeec064b1f0d723117908b25b3961685b9801942c707e5e9bd47d1"
 
 libdir_jre = "${libdir}/jvm/openjdk-21-jre"
 
