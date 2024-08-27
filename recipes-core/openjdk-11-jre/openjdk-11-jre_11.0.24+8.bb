@@ -8,7 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "46e2bff7d5f419ac7c2fad29e78bfacf49ead4a2de1aba73b6329128f6d1f707"
+JVM_CHECKSUM:aarch64 = "1fe97cdaad47d7d108f329c6e4560b46748ef7f2948a1027812ade0bbc2a3597"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -20,7 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "a5ab40aa53ecd413a8af738e66855d423e64b5389f876a4825e2cbdb45e9cfb3"
+JVM_CHECKSUM:arm = "bf893085627c6ec484e63aa1290276b23bcfee547459da6b0432ae9c5c1be22a"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -33,7 +33,7 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "3a0fec1b9ef38d6abd86cf11f6001772b086096b6ec2588d2a02f1fa86b2b1de"
+JVM_CHECKSUM:x86_64 = "e0c1938093da3780e4494d366a4e6b75584dde8d46a19acea6691ae11df4cda5"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -68,7 +68,7 @@ python () {
   d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('+', '_'))
 }
 SRC_URI:append = " https://github.com/adoptium/temurin11-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK11U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
-SRC_URI[sources.sha256sum] = "727a596a0ca94c4afea649a9d5331b8d50cb34f0ed95548498edab6c2027a3d6"
+SRC_URI[sources.sha256sum] = "3f8b36b6bd13e6b9bffdb19805b49baf9fa4eb977bbf9564db3a95151777dbed"
 
 libdir_jre = "${libdir}/jvm/openjdk-11-jre"
 
