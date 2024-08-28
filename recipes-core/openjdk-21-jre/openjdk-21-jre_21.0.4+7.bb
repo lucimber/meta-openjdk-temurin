@@ -3,7 +3,7 @@ HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
 
-COMPATIBLE_HOST = "(x86_64|aarch64).*-linux"
+COMPATIBLE_HOST = "(x86_64|aarch64|riscv64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
@@ -32,6 +32,18 @@ JVM_RDEPENDS:x86_64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.1.4) \
 "
+JVM_CHECKSUM:riscv64 = "bf814344429f53d11f8aace14d326e2580ea6e66dd81b109c79160bd41735237"
+JVM_RDEPENDS:riscv64 = " \
+  alsa-lib (>= 0.9) \
+  freetype (>= 2.13) \
+  glibc (>= 2.34) \
+  libx11 (>= 1.8) \
+  libxext (>= 1.3) \
+  libxi (>= 1.8) \
+  libxrender (>= 0.9) \
+  libxtst (>= 1.2) \
+  zlib (>= 1.1.4) \
+"
 
 RDEPENDS:${PN} = "${JVM_RDEPENDS}"
 
@@ -39,6 +51,7 @@ API_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
 API_ARCH:aarch64 = "aarch64"
 API_ARCH:x86_64 = "x64"
+API_ARCH:riscv64 = "riscv64"
 API_IMAGE_TYPE = "jre"
 API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
