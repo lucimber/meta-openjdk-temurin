@@ -23,12 +23,12 @@ Each codename of OE/Yocto, that is supported by this layer, has a corresponding 
 See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
 
 ## Supported Versions
-| JVM / Architecture | arm | aarch64 | x64 | x86 | s390x |
-|--------------------|-----|---------|-----|-----|-------|
-| JRE 8              | ✅  | ✅      | ✅  | ❌  | ❌   |
-| JRE 11             | ✅  | ✅      | ✅  | ❌  | ❌   |
-| JRE 17             | ✅  | ✅      | ✅  | ❌  | ❌   |
-| JRE 21             | ❌  | ✅      | ✅  | ❌  | ❌   |
+| JVM / Architecture | arm | aarch64 | riscv64 | x64 | x86 |
+|--------------------|-----|---------|---------|-----|-----|
+| JRE 8              | ✅  | ✅      | ❌      | ✅  | ❌  |
+| JRE 11             | ✅  | ✅      | ❌      | ✅  | ❌  |
+| JRE 17             | ✅  | ✅      | ✅      | ✅  | ❌  |
+| JRE 21             | ❌  | ✅      | ✅      | ✅  | ❌  |
 
 ## Adding the meta-openjdk-temurin layer to your build
 * Run 'git clone -b name-of-branch https://github.com/lucimber/meta-openjdk-temurin.git'
