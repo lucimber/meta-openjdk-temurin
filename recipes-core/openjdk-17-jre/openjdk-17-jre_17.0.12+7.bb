@@ -2,10 +2,7 @@ SUMMARY = "Prebuilt OpenJDK JRE for Java 17 offered by Adoptium."
 HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
-
 COMPATIBLE_HOST = "(x86_64|arm|aarch64|riscv64).*-linux"
-OVERRIDES = "${TARGET_ARCH}"
-
 DEPENDS = "patchelf-native"
 
 JVM_CHECKSUM:aarch64 = "9dfe4c56463690ae67d22268980d8861eb46b907d7914f8f2e6fc7b25778c8ec"
@@ -33,8 +30,8 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "0e8088d7a3a7496faba7ac8787db09dc0264c2bc6f568ea8024fd775a783e13c"
-JVM_RDEPENDS:x86_64 = " \
+JVM_CHECKSUM:x86-64 = "0e8088d7a3a7496faba7ac8787db09dc0264c2bc6f568ea8024fd775a783e13c"
+JVM_RDEPENDS:x86-64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
   glibc (>= 2.17) \
@@ -64,7 +61,7 @@ API_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
 API_ARCH:aarch64 = "aarch64"
 API_ARCH:arm = "arm"
-API_ARCH:x86_64 = "x64"
+API_ARCH:x86-64 = "x64"
 API_ARCH:riscv64 = "riscv64"
 API_IMAGE_TYPE = "jre"
 API_JVM_IMPL = "hotspot"
@@ -87,7 +84,7 @@ libdir_jre = "${libdir}/jvm/openjdk-17-jre"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
-INSANE_SKIP:${PN} = "ldflags"
+INSANE_SKIP:${PN}:append = " ldflags"
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_SYSROOT_STRIP = "1"
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
@@ -98,6 +95,9 @@ FILES_SOLIBSDEV = ""
 
 # Ignore QA Issue: non -dev/-dbg/nativesdk- package
 INSANE_SKIP:${PN}:append = " dev-so"
+
+# Ingore QA Issue: /usr/lib/jvm/openjdk-17-jre/* uses 32-bit api 'time'
+INSANE_SKIP:${PN}:append = " 32bit-time"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
