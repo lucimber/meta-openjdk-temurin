@@ -33,19 +33,19 @@ jobs:
             python3-jinja2 libegl1-mesa libsdl1.2-dev xterm \
             python3-subunit mesa-common-dev zstd liblz4-tool
       - name: Checkout OE-Core
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: openembedded/openembedded-core
           ref: kirkstone
           path: oe-core
       - name: Checkout Bitbake
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: openembedded/bitbake
           ref: '2.0'
           path: oe-core/bitbake
       - name: Checkout sources of this project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           path: oe-core/meta-openjdk-temurin
       - name: Replace config of build-environment
@@ -61,7 +61,7 @@ jobs:
           bitbake-layers add-layer ../meta-openjdk-temurin
       - name: Restore cached sstate of Bitbake
         id: cache-bitbake-sstate-restore
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: oe-core/build/sstate-cache
           key: bitbake-sstate_kirkstone_${{ matrix.machine }}
@@ -73,7 +73,7 @@ jobs:
       - name: Save sstate of Bitbake
         id: cache-bitbake-sstate-save
         if: steps.cache-bitbake-sstate-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: oe-core/build/sstate-cache
           key: ${{ steps.cache-bitbake-sstate-restore.outputs.cache-primary-key }}
