@@ -30,6 +30,8 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
+# Prevents error on ARM 32: Multiple shlib providers for libjvm.so
+EXCLUDE_FROM_SHLIBS:arm = "1"
 JVM_CHECKSUM:x86-64 = "0e8088d7a3a7496faba7ac8787db09dc0264c2bc6f568ea8024fd775a783e13c"
 JVM_RDEPENDS:x86-64 = " \
   alsa-lib (>= 0.9) \
