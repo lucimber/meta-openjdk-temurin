@@ -58,7 +58,7 @@ jobs:
         run: |
           cd oe-core
           source oe-init-build-env build > /dev/null 2>&1
-          bitbake-layers add-layer ../meta-openjdk-temurin
+          bitbake-layers -d add-layer ../meta-openjdk-temurin
       - name: Restore cached sstate of Bitbake
         id: cache-bitbake-sstate-restore
         uses: actions/cache/restore@v3
@@ -69,7 +69,7 @@ jobs:
         run: |
           cd oe-core
           source oe-init-build-env build > /dev/null 2>&1
-          MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
+          MACHINE=${{ matrix.machine }} bitbake -D ${{ matrix.recipe }}
       - name: Save sstate of Bitbake
         id: cache-bitbake-sstate-save
         if: steps.cache-bitbake-sstate-restore.outputs.cache-hit != 'true'
