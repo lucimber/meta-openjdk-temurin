@@ -60,7 +60,8 @@ jobs:
           export LANG="en_US.UTF-8"
           export LANGUAGE="en_US.UTF-8"
           cd oe-core
-          source oe-init-build-env build > /dev/null
+          source oe-init-build-env build
+          ls -lh
           rm -rfv bitbake.lock
           bitbake-layers -d add-layer ../meta-openjdk-temurin
       - name: Restore cached sstate of Bitbake
