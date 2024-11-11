@@ -51,13 +51,13 @@ jobs:
       - name: Replace config of build-environment
         run: |
           cd oe-core
-          source oe-init-build-env build > /dev/null 2>&1
+          source oe-init-build-env build > /dev/null
           mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-main-local.conf \
             conf/local.conf
       - name: Add layer to build-environment
         run: |
           cd oe-core
-          source oe-init-build-env build > /dev/null 2>&1
+          source oe-init-build-env build > /dev/null
           bitbake-layers -d add-layer ../meta-openjdk-temurin
       - name: Restore cached sstate of Bitbake
         id: cache-bitbake-sstate-restore
@@ -68,7 +68,7 @@ jobs:
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
-          source oe-init-build-env build > /dev/null 2>&1
+          source oe-init-build-env build > /dev/null
           MACHINE=${{ matrix.machine }} bitbake -D ${{ matrix.recipe }}
       - name: Save sstate of Bitbake
         id: cache-bitbake-sstate-save
