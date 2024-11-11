@@ -56,6 +56,9 @@ jobs:
             conf/local.conf
       - name: Add layer to build-environment
         run: |
+          export LC_ALL="en_US.UTF-8"
+          export LANG="en_US.UTF-8"
+          export LANGUAGE="en_US.UTF-8"
           cd oe-core
           source oe-init-build-env build > /dev/null
           bitbake-layers -d add-layer ../meta-openjdk-temurin
@@ -67,6 +70,9 @@ jobs:
           key: bitbake-sstate_main_${{ matrix.machine }}
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
+          export LC_ALL="en_US.UTF-8"
+          export LANG="en_US.UTF-8"
+          export LANGUAGE="en_US.UTF-8"
           cd oe-core
           source oe-init-build-env build > /dev/null
           MACHINE=${{ matrix.machine }} bitbake -D ${{ matrix.recipe }}
