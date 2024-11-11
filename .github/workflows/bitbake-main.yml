@@ -57,9 +57,8 @@ jobs:
       - name: Add layer to build-environment
         run: |
           cd oe-core
-          source oe-init-build-env build
-          bitbake-layers add-layer ../meta-openjdk-temurin \
-          if [ $? -ne 0 ]; then cat bitbake-cookerdaemon.log; fi
+          source oe-init-build-env build > /dev/null 2>&1
+          bitbake-layers add-layer ../meta-openjdk-temurin
       - name: Restore cached sstate of Bitbake
         id: cache-bitbake-sstate-restore
         uses: actions/cache/restore@v3
@@ -69,9 +68,8 @@ jobs:
       - name: Build ${{ matrix.recipe }} with Bitbake
         run: |
           cd oe-core
-          source oe-init-build-env build
-          MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }} \
-          if [ $? -ne 0 ]; then cat bitbake-cookerdaemon.log; fi
+          source oe-init-build-env build > /dev/null 2>&1
+          MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
       - name: Save sstate of Bitbake
         id: cache-bitbake-sstate-save
         if: steps.cache-bitbake-sstate-restore.outputs.cache-hit != 'true'
