@@ -1,5 +1,4 @@
 name: Bitbake (main)
-
 on:
   push:
     branches:
@@ -7,7 +6,6 @@ on:
   pull_request:
     branches:
       - main
-
 jobs:
   build:
     strategy:
@@ -23,16 +21,17 @@ jobs:
             machine: qemuarm
       max-parallel: 3
       fail-fast: false
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
-      - name: Install software required by OpenEmbedded
+      - name: Install software required by OpenEmbedded / Yocto
         run: |
           sudo apt-get update
-          sudo apt-get install gawk wget git diffstat unzip texinfo \
-            gcc build-essential chrpath socat cpio python3 python3-pip \
-            python3-pexpect xz-utils debianutils iputils-ping python3-git \
-            python3-jinja2 libegl1-mesa libsdl1.2-dev xterm \
-            python3-subunit mesa-common-dev zstd liblz4-tool
+          sudo apt-get install gawk wget git diffstat unzip \
+            texinfo gcc build-essential chrpath socat cpio \
+            python3 python3-pip python3-pexpect xz-utils \
+            debianutils iputils-ping python3-git python3-jinja2 \
+            python3-subunit zstd liblz4-tool file locales libacl1
+          sudo locale-gen en_US.UTF-8
       - name: Checkout OE-Core
         uses: actions/checkout@v4
         with:
@@ -48,6 +47,7 @@ jobs:
       - name: Checkout sources of this project
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.head_ref }}
           path: oe-core/meta-openjdk-temurin
       - name: Replace config of build-environment
         run: |
