@@ -20,6 +20,7 @@ jobs:
           - recipe: openjdk-21-jre
             machine: qemuarm
       max-parallel: 3
+      fail-fast: false
     runs-on: ubuntu-22.04
     steps:
       - name: Install software required by OpenEmbedded / Yocto
@@ -32,19 +33,19 @@ jobs:
             python3-subunit zstd liblz4-tool file locales libacl1
           sudo locale-gen en_US.UTF-8
       - name: Checkout OE-Core
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: openembedded/openembedded-core
           ref: scarthgap
           path: oe-core
       - name: Checkout Bitbake
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: openembedded/bitbake
           ref: '2.8'
           path: oe-core/bitbake
       - name: Checkout sources of this project
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
           path: oe-core/meta-openjdk-temurin
@@ -61,7 +62,7 @@ jobs:
           bitbake-layers add-layer ../meta-openjdk-temurin
       - name: Restore cached sstate of Bitbake
         id: cache-bitbake-sstate-restore
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: oe-core/build/sstate-cache
           key: bitbake-sstate_main_${{ matrix.machine }}
@@ -73,7 +74,7 @@ jobs:
       - name: Save sstate of Bitbake
         id: cache-bitbake-sstate-save
         if: steps.cache-bitbake-sstate-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: oe-core/build/sstate-cache
           key: ${{ steps.cache-bitbake-sstate-restore.outputs.cache-primary-key }}
