@@ -75,7 +75,7 @@ SRC_URI[sources.sha256sum] = "60d79189dc23f3e983ba2f3c327f1ffd1da2e6b0305233b391
 
 S = "${WORKDIR}/${BPN}-${PV}/${JVM_SUBDIR}"
 
-libdir_jre = "${libdir}/jvm/openjdk-8-jre"
+libdir_jre = "${libdir}/jvm/${BPN}"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
@@ -99,7 +99,7 @@ do_install() {
 
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
-    for i in ${D}${libdir}/jvm/${BPN}/bin/* ; do
+    for i in ${D}${libdir_jre}/bin/* ; do
       patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
     done
   fi
