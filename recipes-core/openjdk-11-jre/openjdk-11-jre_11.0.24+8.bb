@@ -69,7 +69,7 @@ python () {
 SRC_URI:append = " https://github.com/adoptium/temurin11-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK11U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
 SRC_URI[sources.sha256sum] = "3f8b36b6bd13e6b9bffdb19805b49baf9fa4eb977bbf9564db3a95151777dbed"
 
-libdir_jre = "${libdir}/jvm/openjdk-11-jre"
+libdir_jre = "${libdir}/jvm/${BPN}"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
@@ -96,7 +96,7 @@ do_install() {
 
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
-    for i in ${D}${libdir}/jvm/${BPN}/bin/* ; do
+    for i in ${D}${libdir_jre}/bin/* ; do
       patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
     done
   fi
