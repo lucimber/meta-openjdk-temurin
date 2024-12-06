@@ -72,7 +72,7 @@ SRC_URI[sources.sha256sum] = "111988b009f6856c717a1a55753bd72048adfd637ed8f232aa
 
 S = "${WORKDIR}/${BPN}-${PV}/jdk-17.0.10+7-jre"
 
-libdir_jre = "${libdir}/jvm/openjdk-17-jre"
+libdir_jre = "${libdir}/jvm/${BPN}"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
@@ -96,7 +96,7 @@ do_install() {
 
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
-    for i in ${D}${libdir}/jvm/${BPN}/bin/* ; do
+    for i in ${D}${libdir_jre}/bin/* ; do
       patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
     done
   fi
