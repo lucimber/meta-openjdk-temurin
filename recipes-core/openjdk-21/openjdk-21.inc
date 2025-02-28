@@ -1,11 +1,9 @@
-SUMMARY = "Prebuilt OpenJDK JRE for Java 21 offered by Adoptium."
 HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
 COMPATIBLE_HOST = "(x86_64|aarch64|riscv64).*-linux"
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "58845ce4275f3ec74fba075597c8216bb201773da036c4703be8b7b7b457355d"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -17,7 +15,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.1.4) \
 "
-JVM_CHECKSUM:x86-64 = "d3affbb011ca6c722948f6345d15eba09bded33f9947d4d67e09723e2518c12a"
+
 JVM_RDEPENDS:x86-64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -29,7 +27,7 @@ JVM_RDEPENDS:x86-64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.1.4) \
 "
-JVM_CHECKSUM:riscv64 = "bf814344429f53d11f8aace14d326e2580ea6e66dd81b109c79160bd41735237"
+
 JVM_RDEPENDS:riscv64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -49,7 +47,6 @@ API_OS = "linux"
 API_ARCH:aarch64 = "aarch64"
 API_ARCH:x86-64 = "x64"
 API_ARCH:riscv64 = "riscv64"
-API_IMAGE_TYPE = "jre"
 API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
 API_VENDOR = "eclipse"
@@ -63,10 +60,11 @@ python () {
   import re
   d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('+', '_'))
 }
+
 SRC_URI:append = " https://github.com/adoptium/temurin21-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK21U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
 SRC_URI[sources.sha256sum] = "ba38841876aeec064b1f0d723117908b25b3961685b9801942c707e5e9bd47d1"
 
-libdir_jre = "${libdir}/jvm/${BPN}"
+libdir_jvm = "${libdir}/jvm/${BPN}"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
@@ -85,24 +83,25 @@ INSANE_SKIP:${PN}:append = " dev-so"
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 do_install() {
-  install -d ${D}${libdir_jre}
-  cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jre}
+  install -d ${D}${libdir_jvm}
+  cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jvm}
 
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
-    for i in ${D}${libdir_jre}/bin/* ; do
+    for i in ${D}${libdir_jvm}/bin/* ; do
       patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
     done
   fi
 }
 
 RPROVIDES:${PN} = "java2-runtime"
-FILES:${PN} = "${libdir_jre}"
+FILES:${PN} = "${libdir_jvm}"
 
 inherit update-alternatives
 ALTERNATIVE_PRIORITY = "100"
 ALTERNATIVE:${PN} = "java keytool"
 ALTERNATIVE_LINK_NAME[java] = "${bindir}/java"
-ALTERNATIVE_TARGET[java] = "${libdir_jre}/bin/java"
+ALTERNATIVE_TARGET[java] = "${libdir_jvm}/bin/java"
 ALTERNATIVE_LINK_NAME[keytool] = "${bindir}/keytool"
-ALTERNATIVE_TARGET[keytool] = "${libdir_jre}/bin/keytool"
+ALTERNATIVE_TARGET[keytool] = "${libdir_jvm}/bin/keytool"
+
