@@ -1,9 +1,10 @@
-require openjdk-21.inc
-require openjdk-21-jdk.inc
-inherit native
+require openjdk-21-native.inc
 
-do_install() {
-  install -d ${D}${libdir_jvm}
-  cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jvm}
-}
+SUMMARY = "Prebuilt OpenJDK JDK for Java 21 offered by Adoptium."
+DESCRIPTION = "OpenJDK 17 Java Development Kit for native builds."
 
+API_IMAGE_TYPE = "jdk"
+JVM_CHECKSUM:aarch64 = "d768eecddd7a515711659e02caef8516b7b7177fa34880a56398fd9822593a79"
+JVM_CHECKSUM:x86-64 = "51fb4d03a4429c39d397d3a03a779077159317616550e4e71624c9843083e7b9"
+JVM_CHECKSUM:riscv64 = "b04fd7f52d18268a935f1a7144dae802b25db600ec97156ddd46b3100cbd13da"
+JVM_SRC_CHECKSUM = "ba38841876aeec064b1f0d723117908b25b3961685b9801942c707e5e9bd47d1"
