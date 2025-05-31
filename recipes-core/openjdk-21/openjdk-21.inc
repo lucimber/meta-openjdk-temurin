@@ -40,7 +40,7 @@ JVM_RDEPENDS:riscv64 = " \
   zlib (>= 1.1.4) \
 "
 
-RDEPENDS:${PN} = "${JVM_RDEPENDS}"
+RDEPENDS:${PN}:class-target = "${JVM_RDEPENDS}"
 
 API_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
@@ -85,13 +85,18 @@ do_compile[noexec] = "1"
 do_install() {
   install -d ${D}${libdir_jvm}
   cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jvm}
-
+  fix_interpreter
+}
+fix_interpreter() {
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
     for i in ${D}${libdir_jvm}/bin/* ; do
       patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
     done
   fi
+}
+fix_interpreter:class-native() {
+  :
 }
 
 RPROVIDES:${PN} = "java2-runtime"
