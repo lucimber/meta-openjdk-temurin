@@ -1,11 +1,9 @@
-SUMMARY = "Prebuilt OpenJDK JRE for Java 17 offered by Adoptium."
 HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
 COMPATIBLE_HOST = "(x86_64|arm|aarch64|riscv64).*-linux"
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "9dfe4c56463690ae67d22268980d8861eb46b907d7914f8f2e6fc7b25778c8ec"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -17,7 +15,6 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "f093094abe0cb2bb5a255d8180810030321073520541f289926c4682eda76136"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -32,7 +29,6 @@ JVM_RDEPENDS:arm = " \
 "
 # Prevents error on ARM 32: Multiple shlib providers for libjvm.so
 EXCLUDE_FROM_SHLIBS:arm = "1"
-JVM_CHECKSUM:x86-64 = "0e8088d7a3a7496faba7ac8787db09dc0264c2bc6f568ea8024fd775a783e13c"
 JVM_RDEPENDS:x86-64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -44,7 +40,6 @@ JVM_RDEPENDS:x86-64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:riscv64 = "2d1ed42918305a1a0754a6e1e9294c7d4d7fda4bff6dba7bc5682037d860dbc9"
 JVM_RDEPENDS:riscv64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -57,7 +52,7 @@ JVM_RDEPENDS:riscv64 = " \
   zlib (>= 1.2) \
 "
 
-RDEPENDS:${PN} = "${JVM_RDEPENDS}"
+RDEPENDS:${PN}:class-target = "${JVM_RDEPENDS}"
 
 API_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
@@ -82,7 +77,7 @@ python () {
 SRC_URI:append = " https://github.com/adoptium/temurin17-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK17U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
 SRC_URI[sources.sha256sum] = "bbc5fe161ea3aad2aad855a7954927d18bbdce1d74d14f2922a85ca50a74fec5"
 
-libdir_jre = "${libdir}/jvm/${BPN}"
+libdir_jvm = "${libdir}/jvm/${BPN}"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
@@ -104,24 +99,29 @@ INSANE_SKIP:${PN}:append = " 32bit-time"
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 do_install() {
-  install -d ${D}${libdir_jre}
-  cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jre}
-
+  install -d ${D}${libdir_jvm}
+  cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jvm}
+  fix_interpreter
+}
+fix_interpreter() {
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
-    for i in ${D}${libdir_jre}/bin/* ; do
+    for i in ${D}${libdir_jvm}/bin/* ; do
       patchelf --set-interpreter ${base_libdir}/$LDLINUX $i
     done
   fi
 }
+fix_interpreter:class-native() {
+  :
+}
 
 RPROVIDES:${PN} = "java2-runtime"
-FILES:${PN} = "${libdir_jre}"
+FILES:${PN} = "${libdir_jvm}"
 
 inherit update-alternatives
 ALTERNATIVE_PRIORITY = "100"
 ALTERNATIVE:${PN} = "java keytool"
 ALTERNATIVE_LINK_NAME[java] = "${bindir}/java"
-ALTERNATIVE_TARGET[java] = "${libdir_jre}/bin/java"
+ALTERNATIVE_TARGET[java] = "${libdir_jvm}/bin/java"
 ALTERNATIVE_LINK_NAME[keytool] = "${bindir}/keytool"
-ALTERNATIVE_TARGET[keytool] = "${libdir_jre}/bin/keytool"
+ALTERNATIVE_TARGET[keytool] = "${libdir_jvm}/bin/keytool"
