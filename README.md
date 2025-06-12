@@ -3,26 +3,40 @@ This layer provides support for the JVMs of the Eclipse Temurin Project for use 
 OpenEmbedded and/or Yocto Project build systems. 
 
 ## Why prebuilt binaries?
-The process of building a JVM binary takes a long time and maintaining it
-(e.g. applying patches and testing it) is a lot of work.
-The [Eclipse Temurin Project](https://projects.eclipse.org/projects/adoptium.temurin) makes sure that the produced binaries pass
-the relevant Oracle Java Compatibility Kit (JCK), to demonstrate
-that the binaries are compatible implementations of the Java specification.
+Building a JVM from source takes a long time and maintaining patches/tests is a lot of effort. Eclipse Temurin binaries are JCK-certified and proven compatible with the Java specification.
 
 ## Dependencies
 * git://git.openembedded.org/openembedded-core
 * git://git.openembedded.org/bitbake
 
-If you're using the Yocto Project's reference distribution called Poky,
-then you're already set up. Just add this layer to your build configuration.
-Please remember to use a branch that is matching with the Codename of your build.
-See https://wiki.yoctoproject.org/wiki/Releases for Codenames.
+If you're using Poky, you're already set up—just clone the branch matching your Yocto codename.
 
-## Supported Codenames
-Each codename of OE/Yocto, that is supported by this layer, has a corresponding branch in this repository.
-See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
+## Adding the layer
+```bash
+git clone -b <yocto-codename> https://github.com/lucimber/meta-openjdk-temurin.git
+bitbake-layers add-layer meta-openjdk-temurin
+```
 
-## Supported Versions
+## Supported Yocto Releases
+This layer supports **LTS branches**, and offers **optional compatibility** for certain adjacent releases grouped based on **technical similarity**, not just release sequence. The following table illustrates this using two examples:
+
+| LTS Branch    | Non‑LTS Compatible Releases          |
+| ------------- | ------------------------------------ |
+| **Kirkstone** | `langdale`, `mickledore`, `nanbield` |
+| **Scarthgap** | `styhead`, `walnascar`               |
+
+> These non-LTS entries in `LAYERSERIES_COMPAT_meta-openjdk-temurin` are **informal and untested**, offered for user convenience. *Support remains focused solely on LTS branches.*
+
+### Benefits of this grouping:
+
+* **Minimal maintenance burden**: Close alignment in BitBake/core component versions enables common patch reuse.
+* **Greater patch stability**: Fewer divergent code paths across grouped releases.
+* **Clear support boundaries**: Users of this layer understand which combinations are recommended vs. “use at your own risk.”
+* **Coherent branch structure**: Each Git branch aligns with an LTS release and its compatible ecosystem.
+
+> See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
+
+## Supported Java Versions
 | JVM / Architecture | arm | aarch64 | riscv64 | x64 | x86 |
 |--------------------|-----|---------|---------|-----|-----|
 | JRE 8              | ✅  | ✅      | ❌      | ✅  | ❌  |
@@ -30,46 +44,19 @@ See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Code
 | JRE 17             | ✅  | ✅      | ✅      | ✅  | ❌  |
 | JRE 21             | ❌  | ✅      | ✅      | ✅  | ❌  |
 
-## Adding the meta-openjdk-temurin layer to your build
-* Run 'git clone -b name-of-branch https://github.com/lucimber/meta-openjdk-temurin.git'
-* Run 'bitbake-layers add-layer meta-openjdk-temurin'
+## Participation & Contribution
 
-## Participation
-Participation is welcome and endorsed by the chosen license
-and a simplified contributor agreement.
+Contributions are welcome under the included GPL - 2.0 license.
+By submitting a PR, you agree to the [Developer Certificate of Origin](https://developercertificate.org):
 
-### Patches
-Please submit any patches against the meta-openjdk-temurin layer via pull requests
-on [the project page on GitHub](https://github.com/lucimber/meta-openjdk-temurin).
-
-### Contributor Agreement
-As the chosen open source license implicitly serves
-as both the inbound (from contributors) and
-outbound (to other contributors and users) license,
-there's no need for an additional contributor agreement.
-
-But to be super safe, this project requires developers
-to state that each commit they make is authorized.
-A Developer Certificate of Origin requirement is how many
-projects achieve this.
-
-> By making a contribution to this project, I certify that:
-> 
-> a. The contribution was created in whole or in part by me and I have the right to submit it under the open source license indicated in the file; or
->
-> b. The contribution is based upon previous work that, to the best of my knowledge, is covered under an appropriate open source license and I have the right under that license to submit that work with modifications, whether created in whole or in part by me, under the same open source license (unless I am permitted to submit under a different license), as indicated in the file; or
->
-> c. The contribution was provided directly to me by some other person who certified (a), (b) or (c) and I have not modified it.
->
-> d. I understand and agree that this project and the contribution are public and that a record of the contribution (including all personal information I submit with it, including my sign-off) is maintained indefinitely and may be redistributed consistent with this project or the open source license(s) involved.
-
-Therefore the contributors to this project sign-off that
-they adhere to these requirements by adding
-a Signed-off-by line to commit messages.
-
-    This is an example commit message.
-    
-    Signed-off-by: Peter Peterson <pp@example.org>
+```
+By making a contribution to this project, I certify that:
+a. The contribution was made by me under GPL-2.0 (or compatible).
+b. If based on prior work, I have the right to submit it under GPL-2.0.
+…
+Signed-off-by: Your Name <you@example.com>
+```
+> Either place `Signed-off-by: ...` into the last line of your commit message, or use the `-s` flag togther with the `git commit` command.
 
 ## Trademarks
 Eclipse Temurin is a trademark of the Eclipse Foundation. Eclipse, and the
@@ -96,3 +83,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+---
+
+*meta - openjdk - temurin is maintained by Lucimber UG, based on work from Eclipse Temurin and the Yocto/OpenEmbedded community.*
+
