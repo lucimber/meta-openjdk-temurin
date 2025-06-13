@@ -8,5 +8,17 @@ JVM_CHECKSUM:riscv64 = "d024c100eba4709970716ddcac757ba5e3122a8ff9c6f539ff8bac5b
 API_IMAGE_TYPE = "jdk"
 BBCLASSEXTEND = "native"
 
+inherit update-alternatives
+ALTERNATIVE_PRIORITY = "100"
+ALTERNATIVE:${PN} = "jar java javac keytool"
+ALTERNATIVE_LINK_NAME[jar] = "${bindir}/jar"
+ALTERNATIVE_TARGET[jar] = "${libdir_jvm}/bin/jar"
+ALTERNATIVE_LINK_NAME[java] = "${bindir}/java"
+ALTERNATIVE_TARGET[java] = "${libdir_jvm}/bin/java"
+ALTERNATIVE_LINK_NAME[javac] = "${bindir}/javac"
+ALTERNATIVE_TARGET[javac] = "${libdir_jvm}/bin/javac"
+ALTERNATIVE_LINK_NAME[keytool] = "${bindir}/keytool"
+ALTERNATIVE_TARGET[keytool] = "${libdir_jvm}/bin/keytool"
+
 # 32-bit ARM includes multiple copies of libjvm.so
 PRIVATE_LIBS = "libjvm.so"
