@@ -47,7 +47,7 @@ jobs:
       - name: Checkout sources of this project
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref_name }}
           path: oe-core/meta-openjdk-temurin
       - name: Replace config of build-environment
         run: |
