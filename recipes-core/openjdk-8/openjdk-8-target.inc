@@ -1,6 +1,6 @@
 require openjdk-8-base.inc
 
-DEPENDS = "patchelf-native"
+DEPENDS += "patchelf-native"
 
 # Prevent the packaging task from stripping out
 # debugging symbols, since there are none.
