@@ -43,6 +43,7 @@ do_install() {
   install -d ${D}${libdir_jvm}
   cp -R --no-dereference --preserve=mode,links -v ${S}/* ${D}${libdir_jvm}
   fix_interpreter
+  create_jdk_symlinks
 }
 fix_interpreter() {
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
@@ -55,7 +56,18 @@ fix_interpreter() {
 fix_interpreter:class-native() {
   :
 }
+create_jdk_symlinks() {
+  :
+}
+create_jdk_symlinks:class-native() {
+  # symlinking manually since update-alternatives isn't meant for native packages
+  install -d ${D}${bindir}
+  for i in jar java javac keytool; do
+    if [ -x ${D}${libdir_jvm}/bin/$i ]; then
+      ln -sf ${@oe.path.relative("${bindir}", "${libdir_jvm}/bin")}/$i ${D}${bindir}/$i
+    fi
+  done
+}
 
 RPROVIDES:${PN} = "java2-runtime"
-FILES:${PN} = "${libdir_jvm}"
-
+FILES:${PN} = "${libdir_jvm} ${bindir}"
