@@ -2,41 +2,7 @@ HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
 COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
-
-RDEPENDS:${PN}:aarch64 = " \
-  alsa-lib (>= 0.9) \
-  freetype (>= 2.11) \
-  glibc (>= 2.17) \
-  libgcc (>= 4.2) \
-  libx11 (>= 1.7) \
-  libxext (>= 1.3) \
-  libxi (>= 1.8) \
-  libxrender (>= 0.9) \
-  libxtst (>= 1.2) \
-"
-RDEPENDS:${PN}:arm = " \
-  alsa-lib (>= 0.9) \
-  freetype (>= 2.11) \
-  glibc (>= 2.17) \
-  libatomic (>= 1.0) \
-  libgcc (>= 3.5) \
-  libx11 (>= 1.7) \
-  libxext (>= 1.3) \
-  libxi (>= 1.8) \
-  libxrender (>= 0.9) \
-  libxtst (>= 1.2) \
-"
-RDEPENDS:${PN}:x86-64 = " \
-  alsa-lib (>= 0.9) \
-  freetype (>= 2.11) \
-  glibc (>= 2.17) \
-  libgcc (>= 4.2) \
-  libx11 (>= 1.7) \
-  libxext (>= 1.3) \
-  libxi (>= 1.8) \
-  libxrender (>= 0.9) \
-  libxtst (>= 1.2) \
-"
+DEPENDS = "alsa-lib freetype libx11 libxext libxi libxrender libxtst"
 
 API_RELEASE_NAME = "jdk${PV}"
 API_OS = "linux"
