@@ -1,25 +1,27 @@
 HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
-COMPATIBLE_HOST = "(x86_64|aarch64|riscv64).*-linux"
+COMPATIBLE_HOST = "(x86_64|arm|aarch64|riscv64).*-linux"
 NATIVEDEPENDS = "patchelf-native"
-NATIVEDEPENDS:class-natve = ""
+NATIVEDEPENDS:class-native = ""
 DEPENDS = "alsa-lib freetype libx11 libxext libxi libxrender libxtst zlib ${NATIVEDEPENDS}"
 
 API_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
 API_ARCH:aarch64 = "aarch64"
+API_ARCH:arm = "arm"
 API_ARCH:x86-64 = "x64"
 API_ARCH:riscv64 = "riscv64"
+API_IMAGE_TYPE = "jre"
 API_JVM_IMPL = "hotspot"
 API_HEAP_SIZE ?= "normal"
 API_VENDOR = "eclipse"
 
 ADAPTED_PV_SRC = "${@d.getVar('PV').replace('-','')}"
 SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};name=binary;downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1 \
-           https://github.com/adoptium/temurin21-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK21U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
+           https://github.com/adoptium/temurin17-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK17U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
 SRC_URI[binary.sha256sum] = "${JVM_CHECKSUM}"
-SRC_URI[sources.sha256sum] = "ba38841876aeec064b1f0d723117908b25b3961685b9801942c707e5e9bd47d1"
+SRC_URI[sources.sha256sum] = "bbc5fe161ea3aad2aad855a7954927d18bbdce1d74d14f2922a85ca50a74fec5"
 
 libdir_jvm = "${libdir}/jvm/${BPN}"
 
@@ -36,6 +38,9 @@ FILES_SOLIBSDEV = ""
 
 # Ignore QA Issue: non -dev/-dbg/nativesdk- package
 INSANE_SKIP:${PN}:append = " dev-so"
+
+# Ingore QA Issue: /usr/lib/jvm/openjdk-17-jre/* uses 32-bit api 'time'
+INSANE_SKIP:${PN}:append = " 32bit-time"
 
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
@@ -71,3 +76,4 @@ create_jdk_symlinks:class-native() {
 
 RPROVIDES:${PN} = "java2-runtime"
 FILES:${PN} = "${libdir_jvm} ${bindir}"
+

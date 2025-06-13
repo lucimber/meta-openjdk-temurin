@@ -7,3 +7,10 @@ JVM_CHECKSUM:riscv64 = "bf814344429f53d11f8aace14d326e2580ea6e66dd81b109c79160bd
 
 API_IMAGE_TYPE = "jre"
 
+inherit update-alternatives
+ALTERNATIVE_PRIORITY = "100"
+ALTERNATIVE:${PN} = "java keytool"
+ALTERNATIVE_LINK_NAME[java] = "${bindir}/java"
+ALTERNATIVE_TARGET[java] = "${libdir_jvm}/bin/java"
+ALTERNATIVE_LINK_NAME[keytool] = "${bindir}/keytool"
+ALTERNATIVE_TARGET[keytool] = "${libdir_jvm}/bin/keytool"

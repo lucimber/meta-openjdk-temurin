@@ -1,0 +1,9 @@
+require openjdk-11.inc
+SUMMARY = "Prebuilt OpenJDK JDK for Java 11 offered by Adoptium."
+
+JVM_CHECKSUM:aarch64 = "04e21301fedc76841fb03929ac6cacfbbda30b5693acfd515a8f34d4a0cdeb28"
+JVM_CHECKSUM:arm = "9d14a076d1440161ab4c9736644e8e9f4719eb8e9f44c03470640960c3cd5e00"
+JVM_CHECKSUM:x86-64 = "0e71a01563a5c7b9988a168b0c4ce720a6dff966b3c27bb29d1ded461ff71d0e"
+
+API_IMAGE_TYPE = "jdk"
+BBCLASSEXTEND = "native"
