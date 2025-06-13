@@ -2,57 +2,9 @@ HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
 COMPATIBLE_HOST = "(x86_64|arm|aarch64|riscv64).*-linux"
-DEPENDS = "patchelf-native"
-
-JVM_RDEPENDS:aarch64 = " \
-  alsa-lib (>= 0.9) \
-  freetype (>= 2.13) \
-  glibc (>= 2.17) \
-  libx11 (>= 1.7) \
-  libxext (>= 1.3) \
-  libxi (>= 1.8) \
-  libxrender (>= 0.9) \
-  libxtst (>= 1.2) \
-  zlib (>= 1.2) \
-"
-JVM_RDEPENDS:arm = " \
-  alsa-lib (>= 0.9) \
-  freetype (>= 2.13) \
-  glibc (>= 2.17) \
-  libatomic (>= 1.0) \
-  libx11 (>= 1.7) \
-  libxext (>= 1.3) \
-  libxi (>= 1.8) \
-  libxrender (>= 0.9) \
-  libxtst (>= 1.2) \
-  zlib (>= 1.2) \
-"
-# Prevents error on ARM 32: Multiple shlib providers for libjvm.so
-EXCLUDE_FROM_SHLIBS:arm = "1"
-JVM_RDEPENDS:x86-64 = " \
-  alsa-lib (>= 0.9) \
-  freetype (>= 2.13) \
-  glibc (>= 2.17) \
-  libx11 (>= 1.7) \
-  libxext (>= 1.3) \
-  libxi (>= 1.8) \
-  libxrender (>= 0.9) \
-  libxtst (>= 1.2) \
-  zlib (>= 1.2) \
-"
-JVM_RDEPENDS:riscv64 = " \
-  alsa-lib (>= 0.9) \
-  freetype (>= 2.13) \
-  glibc (>= 2.17) \
-  libx11 (>= 1.7) \
-  libxext (>= 1.3) \
-  libxi (>= 1.8) \
-  libxrender (>= 0.9) \
-  libxtst (>= 1.2) \
-  zlib (>= 1.2) \
-"
-
-RDEPENDS:${PN}:class-target = "${JVM_RDEPENDS}"
+NATIVEDEPENDS = "patchelf-native"
+NATIVEDEPENDS:class-native = ""
+DEPENDS = "alsa-lib freetype libx11 libxext libxi libxrender libxtst zlib ${NATIVEDEPENDS}"
 
 API_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"

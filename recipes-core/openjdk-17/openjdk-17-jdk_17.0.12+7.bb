@@ -7,3 +7,6 @@ JVM_CHECKSUM:riscv64 = "d024c100eba4709970716ddcac757ba5e3122a8ff9c6f539ff8bac5b
 
 API_IMAGE_TYPE = "jdk"
 BBCLASSEXTEND = "native"
+
+# 32-bit ARM includes multiple copies of libjvm.so
+PRIVATE_LIBS = "libjvm.so"
