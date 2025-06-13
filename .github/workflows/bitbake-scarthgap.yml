@@ -10,10 +10,10 @@ jobs:
   build:
     strategy:
       matrix:
-        recipe: [openjdk-8-jre, openjdk-11-jre, openjdk-17-jre, openjdk-21-jre]
+        recipe: [openjdk-8-jre, openjdk-8-jdk, openjdk-8-jdk-native, openjdk-11-jre, openjdk-17-jre, openjdk-21-jre]
         machine: [qemuarm, qemuarm64, qemuriscv64, qemux86-64]
         exclude:
-          - recipe: openjdk-8-jre
+          - recipe: [openjdk-8-jre, openjdk-8-jdk, openjdk-8-jdk-native]
             machine: qemuriscv64
           - recipe: openjdk-11-jre
             machine: qemuriscv64
