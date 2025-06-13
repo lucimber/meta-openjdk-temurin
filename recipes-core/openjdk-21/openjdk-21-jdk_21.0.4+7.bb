@@ -6,3 +6,15 @@ JVM_CHECKSUM:riscv64 = "b04fd7f52d18268a935f1a7144dae802b25db600ec97156ddd46b310
 
 API_IMAGE_TYPE = "jdk"
 BBCLASSEXTEND = "native"
+
+inherit update-alternatives
+ALTERNATIVE_PRIORITY = "100"
+ALTERNATIVE:${PN} = "jar java javac keytool"
+ALTERNATIVE_LINK_NAME[jar] = "${bindir}/jar"
+ALTERNATIVE_TARGET[jar] = "${libdir_jvm}/bin/jar"
+ALTERNATIVE_LINK_NAME[java] = "${bindir}/java"
+ALTERNATIVE_TARGET[java] = "${libdir_jvm}/bin/java"
+ALTERNATIVE_LINK_NAME[javac] = "${bindir}/javac"
+ALTERNATIVE_TARGET[javac] = "${libdir_jvm}/bin/javac"
+ALTERNATIVE_LINK_NAME[keytool] = "${bindir}/keytool"
+ALTERNATIVE_TARGET[keytool] = "${libdir_jvm}/bin/keytool"

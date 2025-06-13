@@ -59,11 +59,3 @@ fix_interpreter:class-native() {
 RPROVIDES:${PN} = "java2-runtime"
 FILES:${PN} = "${libdir_jvm}"
 
-inherit update-alternatives
-ALTERNATIVE_PRIORITY = "100"
-ALTERNATIVE:${PN} = "java keytool"
-ALTERNATIVE_LINK_NAME[java] = "${bindir}/java"
-ALTERNATIVE_TARGET[java] = "${libdir_jvm}/bin/java"
-ALTERNATIVE_LINK_NAME[keytool] = "${bindir}/keytool"
-ALTERNATIVE_TARGET[keytool] = "${libdir_jvm}/bin/keytool"
-
