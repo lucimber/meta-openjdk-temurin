@@ -12,13 +12,15 @@ RDEPENDS:${PN} += "openjdk-${JAVA_VERSION}-jre"
 
 SRC_URI = "file://HelloWorld.java"
 SRC_URI += "file://helloworld-java.sh.in"
-S = "${WORKDIR}"
+
+S = "${WORKDIR}/sources"
+UNPACKDIR = "${WORKDIR}/sources"
 
 do_compile() {
-    ${STAGING_BINDIR_NATIVE}/javac HelloWorld.java
+    ${STAGING_BINDIR_NATIVE}/javac ${UNPACKDIR}/HelloWorld.java
     sed -e "s,@JAVA_HOME@,${libdir}/jvm/openjdk-${JAVA_VERSION}-jre," \
         -e "s,@CLASSPATH@,${libdir}/${BPN}," \
-        ${S}/helloworld-java.sh.in > ${B}/helloworld-java
+        ${UNPACKDIR}/helloworld-java.sh.in > ${B}/helloworld-java
 }
 
 do_install() {
