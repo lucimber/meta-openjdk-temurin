@@ -29,13 +29,7 @@ do_install() {
 
   LDLINUX=$(basename $(ls -1 ${RECIPE_SYSROOT}${base_libdir}/ld-linux* | sort | head -n1))
   if [ -n "$LDLINUX" ]; then
-    for i in ${D}${libdir_jvm}/bin/*; do
-      if file "$i" | grep -q ELF; then
-        patchelf --set-interpreter ${base_libdir}/$LDLINUX "$i"
-      else
-        bbnote "Skipping non-ELF file: $i"
-      fi
-    done
+    find ${D}${libdir_jvm} -type f -executable -exec patchelf --set-interpreter ${base_libdir}/$LDLINUX {} \;
   fi
 }
 
