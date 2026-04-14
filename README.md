@@ -1,6 +1,8 @@
-# README
+# README (branch: main)
 This layer provides support for the JVMs of the Eclipse Temurin Project for use with
-OpenEmbedded and/or Yocto Project build systems. 
+OpenEmbedded and/or Yocto Project build systems.
+
+> You are reading the `main` branch. It targets the OE-Core **6.x** release series (wrynose and any later 6.x codenames). For earlier series, switch to the matching release branch (`scarthgap` for 5.x, `kirkstone` for 4.x, `dunfell` for 3.x).
 
 ## Why prebuilt binaries?
 Building a JVM from source takes a long time and maintaining patches/tests is a lot of effort. Eclipse Temurin binaries are JCK-certified and proven compatible with the Java specification.
@@ -18,14 +20,16 @@ bitbake-layers add-layer meta-openjdk-temurin
 ```
 
 ## Supported Yocto Releases
-This layer supports **LTS branches**, and offers **optional compatibility** for certain adjacent releases grouped based on **technical similarity**, not just release sequence. The following table illustrates this using two examples:
+The layer uses one git branch per OE-Core **major version**. Each branch officially supports the LTS (`.0`) release in its series and additionally declares compatibility with every other codename in the same major line, grouped by shared BitBake/OE-Core generation.
 
-| LTS Branch    | Non‑LTS Compatible Releases          |
-| ------------- | ------------------------------------ |
-| **Kirkstone** | `langdale`, `mickledore`, `nanbield` |
-| **Scarthgap** | `styhead`, `walnascar`               |
+| Branch      | Major | Primary (LTS) | Additional compatible codenames               |
+| ----------- | ----- | ------------- | ---------------------------------------------- |
+| `dunfell`   | 3.x   | dunfell       | zeus, gatesgarth, hardknott, honister          |
+| `kirkstone` | 4.x   | kirkstone     | langdale, mickledore, nanbield                 |
+| `scarthgap` | 5.x   | scarthgap     | styhead, walnascar, whinlatter                 |
+| `main`      | 6.x   | —             | wrynose (only 6.x codename released so far)    |
 
-> These non-LTS entries in `LAYERSERIES_COMPAT_meta-openjdk-temurin` are **informal and untested**, offered for user convenience. *Support remains focused solely on LTS branches.*
+> Non-LTS codename entries in `LAYERSERIES_COMPAT_meta-openjdk-temurin` are **informal and untested**, offered for user convenience. *Primary support is focused on the LTS release in each major line.*
 
 ### Benefits of this grouping:
 
