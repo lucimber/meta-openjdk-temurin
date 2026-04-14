@@ -40,13 +40,13 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: openembedded/openembedded-core
-          ref: whinlatter
+          ref: master
           path: oe-core
       - name: Checkout Bitbake
         uses: actions/checkout@v4
         with:
           repository: openembedded/bitbake
-          ref: '2.16'
+          ref: master
           path: oe-core/bitbake
       - name: Checkout sources of this project
         uses: actions/checkout@v4
