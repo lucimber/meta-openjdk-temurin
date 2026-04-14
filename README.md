@@ -1,6 +1,8 @@
-# README
+# README (branch: scarthgap)
 This layer provides support for the JVMs of the Eclipse Temurin Project for use with
-OpenEmbedded and/or Yocto Project build systems. 
+OpenEmbedded and/or Yocto Project build systems.
+
+> You are reading the `scarthgap` branch. It targets the OE-Core **5.x** release series: scarthgap (LTS) plus styhead, walnascar, and whinlatter. For earlier series, switch to the matching release branch (`kirkstone` for 4.x, `dunfell` for 3.x); for 6.x use `main`.
 
 ## Why prebuilt binaries?
 The process of building a JVM binary takes a long time and maintaining it
@@ -18,9 +20,19 @@ then you're already set up. Just add this layer to your build configuration.
 Please remember to use a branch that is matching with the Codename of your build.
 See https://wiki.yoctoproject.org/wiki/Releases for Codenames.
 
-## Supported Codenames
-Each codename of OE/Yocto, that is supported by this layer, has a corresponding branch in this repository.
-See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
+## Supported Yocto Releases
+The layer uses one git branch per OE-Core **major version**. Each branch officially supports the LTS (`.0`) release in its series and additionally declares compatibility with every other codename in the same major line, grouped by shared BitBake/OE-Core generation.
+
+| Branch      | Major | Primary (LTS) | Additional compatible codenames               |
+| ----------- | ----- | ------------- | ---------------------------------------------- |
+| `dunfell`   | 3.x   | dunfell       | zeus, gatesgarth, hardknott, honister          |
+| `kirkstone` | 4.x   | kirkstone     | langdale, mickledore, nanbield                 |
+| `scarthgap` | 5.x   | scarthgap     | styhead, walnascar, whinlatter                 |
+| `main`      | 6.x   | —             | wrynose (only 6.x codename released so far)    |
+
+> Non-LTS codename entries in `LAYERSERIES_COMPAT_meta-openjdk-temurin` are **informal and untested**, offered for user convenience. *Primary support is focused on the LTS release in each major line.*
+
+> See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
 
 ## Supported Versions
 | JVM / Architecture | arm | aarch64 | riscv64 | x64 | x86 |
