@@ -4,10 +4,10 @@ SUMMARY = "Prebuilt OpenJDK JDK for Java 8 offered by Adoptium."
 DESCRIPTION = "OpenJDK 8 Java Development Kit for target builds."
 
 API_IMAGE_TYPE = "jdk"
-JVM_CHECKSUM:aarch64 = "af98a839ec238106078bd360af9e405dc6665c05ee837178ed13b92193681923"
-JVM_CHECKSUM:arm = "5bd0203b2b09b033e3a762299a4975939d7571b433eab8b59340cc966102bef1"
-JVM_CHECKSUM:x86-64 = "4c6056f6167fae73ace7c3080b78940be5c87d54f5b08894b3517eed1cbb2c06"
-JVM_SRC_CHECKSUM = "ed95a098f1036b1300d6a6470f77b3445c02d2994e4d6ef8ef991183129cda80"
+JVM_CHECKSUM:aarch64 = "ada72fbf191fb287b4c1e54be372b64c40c27c2ffbfa01f880c92af11f4e7c94"
+JVM_CHECKSUM:arm = "1d0d16394e2fe637f9eb8e73e63ea6fe9ceee98337c0527aa058cee777ad638a"
+JVM_CHECKSUM:x86-64 = "e74becad56b4cc01f1556a671e578d3788789f5257f9499f6fbed84e63a55ecf"
+JVM_SRC_CHECKSUM = "5685fa2e9c1dff2e62010f389001f5ec6ab5df14f64c4cd4371f522157cf0025"
 
 # Multiple, different copies of this library are installed. This
 # library (and probably all the other .so's used by the JVM)
