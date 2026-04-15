@@ -4,10 +4,10 @@ SUMMARY = "Prebuilt OpenJDK JRE for Java 11 offered by Adoptium."
 DESCRIPTION = "OpenJDK 11 Java Runtime Environment for target builds."
 
 API_IMAGE_TYPE = "jre"
-JVM_CHECKSUM:aarch64 = "1fe97cdaad47d7d108f329c6e4560b46748ef7f2948a1027812ade0bbc2a3597"
-JVM_CHECKSUM:arm = "bf893085627c6ec484e63aa1290276b23bcfee547459da6b0432ae9c5c1be22a"
-JVM_CHECKSUM:x86-64 = "e0c1938093da3780e4494d366a4e6b75584dde8d46a19acea6691ae11df4cda5"
-JVM_SRC_CHECKSUM = "3f8b36b6bd13e6b9bffdb19805b49baf9fa4eb977bbf9564db3a95151777dbed"
+JVM_CHECKSUM:aarch64 = "9d6a8d3a33c308bbc7332e4c2e2f9a94fbbc56417863496061ef6defef9c5391"
+JVM_CHECKSUM:arm = "8cc849890ecee80b002171f54b6df7d14744b83ba44646f52f5ca927a85599b7"
+JVM_CHECKSUM:x86-64 = "d851e43d81ec6ff7f28efe28c42b4787a045e8f59cdcd6434dece98d8342eb8a"
+JVM_SRC_CHECKSUM = "10c2d10ee2ca1f22798435fc416593f2f972e53caf4b5c54682126c67fd07a2b"
 
 # Multiple, different copies of this library are installed on 32-bit
 # ARM. This library (and probably all the other .so's used by the JVM)
