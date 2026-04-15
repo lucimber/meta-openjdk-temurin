@@ -77,6 +77,57 @@ jobs:
           cd oe-core
           source oe-init-build-env build > /dev/null 2>&1
           MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
+      - name: Register qemu-user handlers for non-native archs
+        if: contains(matrix.recipe, '-jre') && matrix.machine != 'qemux86-64'
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: arm64,arm,riscv64
+      - name: Smoke test — java -version
+        if: contains(matrix.recipe, '-jre')
+        run: |
+          set -euo pipefail
+
+          # Locate the primary ipk (exclude -dbg / -dev / -doc splits).
+          ipk=$(find oe-core/build/tmp*/deploy/ipk \
+                  -name "${{ matrix.recipe }}_*.ipk" \
+                  ! -name '*-dbg*' ! -name '*-dev*' ! -name '*-doc*' \
+                  | head -1)
+          [ -n "$ipk" ] || { echo "error: no ipk produced for ${{ matrix.recipe }}"; exit 1; }
+
+          # Extract the ipk (ar archive containing data.tar.*) into a sysroot.
+          work=$(mktemp -d)
+          ( cd "$work" && ar x "$ipk" && tar xf data.tar.* )
+
+          # Map the OE MACHINE to the Docker --platform qemu-user emulates.
+          case "${{ matrix.machine }}" in
+            qemux86-64)  plat=linux/amd64   ;;
+            qemuarm64)   plat=linux/arm64   ;;
+            qemuarm)     plat=linux/arm/v7  ;;
+            qemuriscv64) plat=linux/riscv64 ;;
+            *) echo "error: unknown machine ${{ matrix.machine }}"; exit 1 ;;
+          esac
+
+          # Run the extracted java under a target-arch glibc. The Temurin
+          # binary's ELF interpreter is patched to ${base_libdir}/ld-linux-*,
+          # which under usrmerge-enabled OE distros is /usr/lib/ld-linux-*.
+          # Debian trixie keeps the real file under a multiarch triplet path,
+          # so we create a compat symlink at /usr/lib/ld-linux-* (and /lib/
+          # for belt-and-braces) before invoking java.
+          docker run --rm --platform "$plat" \
+            -v "$work:/rootfs:ro" \
+            debian:trixie-slim \
+            sh -ec '
+              set -eu
+              for real in /lib/*/ld-linux-* /lib64/ld-linux-* /usr/lib/*/ld-linux-*; do
+                [ -f "$real" ] || continue
+                base=$(basename "$real")
+                [ -e "/usr/lib/$base" ] || ln -sf "$real" "/usr/lib/$base"
+                [ -e "/lib/$base" ]     || ln -sf "$real" "/lib/$base"
+              done
+              java=$(find /rootfs/usr/lib/jvm -name java -type f -executable | head -1)
+              [ -n "$java" ] || { echo "error: no java binary in extracted ipk"; exit 1; }
+              "$java" -version
+            '
       - name: Save sstate of Bitbake
         id: cache-bitbake-sstate-save
         if: steps.cache-bitbake-sstate-restore.outputs.cache-hit != 'true'
