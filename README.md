@@ -51,7 +51,7 @@ The layer uses one git branch per OE-Core **major version**. Each branch officia
 
 ## Participation & Contribution
 
-Contributions are welcome under the included GPL - 2.0 license.
+Contributions are welcome under the included GPL - 2.0 license.
 By submitting a PR, you agree to the [Developer Certificate of Origin](https://developercertificate.org):
 
 ```
@@ -91,4 +91,5 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 ---
 
-*meta - openjdk - temurin is maintained by Lucimber UG, based on work from Eclipse Temurin and the Yocto/OpenEmbedded community.*
+*meta - openjdk - temurin is maintained by Lucimber UG, based on work from Eclipse Temurin and the Yocto/OpenEmbedded community.*
+
