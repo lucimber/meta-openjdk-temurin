@@ -41,13 +41,22 @@ The layer uses one git branch per OE-Core **major version**. Each branch officia
 > See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
 
 ## Supported Java Versions
-| JVM / Architecture | arm | aarch64 | riscv64 | x64 | x86 |
-|--------------------|-----|---------|---------|-----|-----|
-| JRE 8              | ✅  | ✅      | ❌      | ✅  | ❌  |
-| JRE 11             | ✅  | ✅      | ❌      | ✅  | ❌  |
-| JRE 17             | ✅  | ✅      | ✅      | ✅  | ❌  |
-| JRE 21             | ❌  | ✅      | ✅      | ✅  | ❌  |
-| JRE 25             | ❌  | ✅      | ✅      | ✅  | ❌  |
+
+Each feature version provides three recipes — all drawn from the same Eclipse Temurin binary matrix, so per-architecture availability is identical across them:
+
+- `openjdk-N-jre` — Java Runtime Environment for the target
+- `openjdk-N-jdk` — Java Development Kit for the target
+- `openjdk-N-jdk-native` — Java Development Kit for the build host (for cross-compiling Java inside Yocto; see `meta-openjdk-temurin/USAGE.md`)
+
+| Version | arm | aarch64 | riscv64 | x86-64 |
+|---------|-----|---------|---------|--------|
+|       8 | ✅  | ✅      | ❌      | ✅     |
+|      11 | ✅  | ✅      | ❌      | ✅     |
+|      17 | ✅  | ✅      | ✅      | ✅     |
+|      21 | ❌  | ✅      | ✅      | ✅     |
+|      25 | ❌  | ✅      | ✅      | ✅     |
+
+> 32-bit x86 is not supported — Adoptium does not publish Linux x86 Temurin builds.
 
 ## Participation & Contribution
 
