@@ -47,6 +47,7 @@ The layer uses one git branch per OE-Core **major version**. Each branch officia
 | JRE 11             | ✅  | ✅      | ❌      | ✅  | ❌  |
 | JRE 17             | ✅  | ✅      | ✅      | ✅  | ❌  |
 | JRE 21             | ❌  | ✅      | ✅      | ✅  | ❌  |
+| JRE 25             | ❌  | ✅      | ✅      | ✅  | ❌  |
 
 ## Participation & Contribution
 
