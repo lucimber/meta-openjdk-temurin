@@ -14,75 +14,69 @@
 ---
 
 This layer provides support for the JVMs of the Eclipse Temurin Project for use with
-OpenEmbedded and/or Yocto Project build systems. 
+OpenEmbedded and/or Yocto Project build systems.
+
+> You are reading the `dunfell` branch. It targets the OE-Core **3.x** release series: dunfell (LTS) plus zeus, gatesgarth, hardknott, and honister. **This branch is obsolete** — see the banner above. For supported series use `kirkstone` (4.x), `scarthgap` (5.x), or `main` (6.x).
 
 ## Why prebuilt binaries?
-The process of building a JVM binary takes a long time and maintaining it
-(e.g. applying patches and testing it) is a lot of work.
-The [Eclipse Temurin Project](https://projects.eclipse.org/projects/adoptium.temurin) makes sure that the produced binaries pass
-the relevant Oracle Java Compatibility Kit (JCK), to demonstrate
-that the binaries are compatible implementations of the Java specification.
+Building a JVM from source takes a long time and maintaining patches/tests is a lot of effort. Eclipse Temurin binaries are JCK-certified and proven compatible with the Java specification.
 
 ## Dependencies
 * git://git.openembedded.org/openembedded-core
 * git://git.openembedded.org/bitbake
 
-If you're using the Yocto Project's reference distribution called Poky,
-then you're already set up. Just add this layer to your build configuration.
-Please remember to use a branch that is matching with the Codename of your build.
-See https://wiki.yoctoproject.org/wiki/Releases for Codenames.
+If you're using Poky, you're already set up—just clone the branch matching your Yocto codename.
 
-## Supported Codenames
-Each codename of OE/Yocto, that is supported by this layer, has a corresponding branch in this repository.
-See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
+## Adding the layer
+```bash
+git clone -b <yocto-codename> https://github.com/lucimber/meta-openjdk-temurin.git
+bitbake-layers add-layer meta-openjdk-temurin
+```
 
-## Supported Versions
-| JVM / Architecture | arm | aarch64 | x64 | x86 | s390x |
-|--------------------|-----|---------|-----|-----|-------|
-| JRE 8              | ✅  | ✅      | ✅  | ❌  | ❌   |
-| JRE 11             | ✅  | ✅      | ✅  | ❌  | ❌   |
-| JRE 17             | ✅  | ✅      | ✅  | ❌  | ❌   |
+## Supported Yocto Releases
+The layer uses one git branch per OE-Core **major version**. Each branch officially supports the LTS (`.0`) release in its series and additionally declares compatibility with every other codename in the same major line, grouped by shared BitBake/OE-Core generation.
 
-## Adding the meta-openjdk-temurin layer to your build
-* Run 'git clone -b name-of-branch https://github.com/lucimber/meta-openjdk-temurin.git'
-* Run 'bitbake-layers add-layer meta-openjdk-temurin'
+| Branch      | Major | Primary (LTS) | Additional compatible codenames               |
+| ----------- | ----- | ------------- | ---------------------------------------------- |
+| `dunfell`   | 3.x   | dunfell       | zeus, gatesgarth, hardknott, honister          |
+| `kirkstone` | 4.x   | kirkstone     | langdale, mickledore, nanbield                 |
+| `scarthgap` | 5.x   | scarthgap     | styhead, walnascar, whinlatter                 |
+| `main`      | 6.x   | —             | wrynose (only 6.x codename released so far)    |
 
-## Participation
-Participation is welcome and endorsed by the chosen license
-and a simplified contributor agreement.
+> Non-LTS codename entries in `LAYERSERIES_COMPAT_meta-openjdk-temurin` are **informal and untested**, offered for user convenience. *Primary support is focused on the LTS release in each major line.*
 
-### Patches
-Please submit any patches against the meta-openjdk-temurin layer via pull requests
-on [the project page on GitHub](https://github.com/lucimber/meta-openjdk-temurin).
+### Benefits of this grouping:
 
-### Contributor Agreement
-As the chosen open source license implicitly serves
-as both the inbound (from contributors) and
-outbound (to other contributors and users) license,
-there's no need for an additional contributor agreement.
+* **Minimal maintenance burden**: Close alignment in BitBake/core component versions enables common patch reuse.
+* **Greater patch stability**: Fewer divergent code paths across grouped releases.
+* **Clear support boundaries**: Users of this layer understand which combinations are recommended vs. “use at your own risk.”
+* **Coherent branch structure**: Each Git branch aligns with an LTS release and its compatible ecosystem.
 
-But to be super safe, this project requires developers
-to state that each commit they make is authorized.
-A Developer Certificate of Origin requirement is how many
-projects achieve this.
+> See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
 
-> By making a contribution to this project, I certify that:
-> 
-> a. The contribution was created in whole or in part by me and I have the right to submit it under the open source license indicated in the file; or
->
-> b. The contribution is based upon previous work that, to the best of my knowledge, is covered under an appropriate open source license and I have the right under that license to submit that work with modifications, whether created in whole or in part by me, under the same open source license (unless I am permitted to submit under a different license), as indicated in the file; or
->
-> c. The contribution was provided directly to me by some other person who certified (a), (b) or (c) and I have not modified it.
->
-> d. I understand and agree that this project and the contribution are public and that a record of the contribution (including all personal information I submit with it, including my sign-off) is maintained indefinitely and may be redistributed consistent with this project or the open source license(s) involved.
+## Supported Java Versions
+| JVM / Architecture | arm | aarch64 | riscv64 | x64 | x86 |
+|--------------------|-----|---------|---------|-----|-----|
+| JRE 8              | ✅  | ✅      | ❌      | ✅  | ❌  |
+| JRE 11             | ✅  | ✅      | ❌      | ✅  | ❌  |
+| JRE 17             | ✅  | ✅      | ✅      | ✅  | ❌  |
+| JRE 21             | ❌  | ✅      | ✅      | ✅  | ❌  |
 
-Therefore the contributors to this project sign-off that
-they adhere to these requirements by adding
-a Signed-off-by line to commit messages.
+> No plans to backport JRE 25 to this obsolete branch.
 
-    This is an example commit message.
-    
-    Signed-off-by: Peter Peterson <pp@example.org>
+## Participation & Contribution
+
+Contributions are welcome under the included GPL - 2.0 license.
+By submitting a PR, you agree to the [Developer Certificate of Origin](https://developercertificate.org):
+
+```
+By making a contribution to this project, I certify that:
+a. The contribution was made by me under GPL-2.0 (or compatible).
+b. If based on prior work, I have the right to submit it under GPL-2.0.
+…
+Signed-off-by: Your Name <you@example.com>
+```
+> Either place `Signed-off-by: ...` into the last line of your commit message, or use the `-s` flag togther with the `git commit` command.
 
 ## Trademarks
 Eclipse Temurin is a trademark of the Eclipse Foundation. Eclipse, and the
@@ -109,3 +103,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along
 with this program; if not, write to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+---
+
+*meta - openjdk - temurin is maintained by Lucimber UG, based on work from Eclipse Temurin and the Yocto/OpenEmbedded community.*
