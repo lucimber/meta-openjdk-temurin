@@ -4,10 +4,10 @@ SUMMARY = "Prebuilt OpenJDK JDK for Java 11 offered by Adoptium."
 DESCRIPTION = "OpenJDK 11 Java Development Kit for target builds."
 
 API_IMAGE_TYPE = "jdk"
-JVM_CHECKSUM:aarch64 = "04e21301fedc76841fb03929ac6cacfbbda30b5693acfd515a8f34d4a0cdeb28"
-JVM_CHECKSUM:arm = "9d14a076d1440161ab4c9736644e8e9f4719eb8e9f44c03470640960c3cd5e00"
-JVM_CHECKSUM:x86-64 = "0e71a01563a5c7b9988a168b0c4ce720a6dff966b3c27bb29d1ded461ff71d0e"
-JVM_SRC_CHECKSUM = "3f8b36b6bd13e6b9bffdb19805b49baf9fa4eb977bbf9564db3a95151777dbed"
+JVM_CHECKSUM:aarch64 = "3c8fb6754deced4e08a03524b6af1df4f3df451f1832f3dcd3a6848fd54b8d08"
+JVM_CHECKSUM:arm = "1ef020c2215f3169c7610df573581806c58f00a0a1d512fd945a2687cbed1173"
+JVM_CHECKSUM:x86-64 = "1911fa4010d59985d4cba9f4295c704ae64d08dfc3c2d5747bbc18655b1e911a"
+JVM_SRC_CHECKSUM = "10c2d10ee2ca1f22798435fc416593f2f972e53caf4b5c54682126c67fd07a2b"
 
 # Multiple, different copies of this library are installed on 32-bit
 # ARM. This library (and probably all the other .so's used by the JVM)
