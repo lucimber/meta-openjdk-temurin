@@ -55,14 +55,17 @@ The layer uses one git branch per OE-Core **major version**. Each branch officia
 > See https://wiki.yoctoproject.org/wiki/Releases for a comprehensive list of Codenames.
 
 ## Supported Java Versions
-| JVM / Architecture | arm | aarch64 | riscv64 | x64 | x86 |
-|--------------------|-----|---------|---------|-----|-----|
-| JRE 8              | ✅  | ✅      | ❌      | ✅  | ❌  |
-| JRE 11             | ✅  | ✅      | ❌      | ✅  | ❌  |
-| JRE 17             | ✅  | ✅      | ✅      | ✅  | ❌  |
-| JRE 21             | ❌  | ✅      | ✅      | ✅  | ❌  |
 
-> No plans to backport JRE 25 to this obsolete branch.
+This branch ships **only the target JRE** (`openjdk-N-jre`) — the `openjdk-N-jdk` and `openjdk-N-jdk-native` recipes introduced on later branches were never backported and will not be.
+
+| Version | arm | aarch64 | riscv64 | x86-64 |
+|---------|-----|---------|---------|--------|
+|       8 | ✅  | ✅      | ❌      | ✅     |
+|      11 | ✅  | ✅      | ❌      | ✅     |
+|      17 | ✅  | ✅      | ✅      | ✅     |
+|      21 | ❌  | ✅      | ✅      | ✅     |
+
+> 32-bit x86 is not supported — Adoptium does not publish Linux x86 Temurin builds. JRE 25 is likewise out of scope for this obsolete branch.
 
 ## Participation & Contribution
 
