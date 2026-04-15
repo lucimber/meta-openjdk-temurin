@@ -1,4 +1,18 @@
-# README
+# README (branch: dunfell — OBSOLETE)
+
+> ## ⚠️ This branch is obsolete and no longer supported.
+>
+> The `dunfell` branch of `meta-openjdk-temurin` is **end-of-life**. Yocto Project Dunfell (3.1) reached its extended-community-maintenance EOL in April 2024 and no further updates — security, recipe, or compatibility — will be made on this branch.
+>
+> **Action required:** migrate to a supported branch:
+> - `kirkstone` for the OE-Core 4.x series (LTS until 2026-04)
+> - `scarthgap` for the OE-Core 5.x series (LTS until 2028-04)
+> - `main` for the OE-Core 6.x series (wrynose / current development)
+>
+> Existing dunfell-based builds will continue to work as long as the binary URLs they reference remain reachable, but no fixes will be backported.
+
+---
+
 This layer provides support for the JVMs of the Eclipse Temurin Project for use with
 OpenEmbedded and/or Yocto Project build systems. 
 
