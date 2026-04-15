@@ -41,6 +41,7 @@ The layer uses one git branch per OE-Core **major version**. Each branch officia
 | JRE 11             | ✅  | ✅      | ❌      | ✅  | ❌  |
 | JRE 17             | ✅  | ✅      | ✅      | ✅  | ❌  |
 | JRE 21             | ❌  | ✅      | ✅      | ✅  | ❌  |
+| JRE 25             | ❌  | ✅      | ✅      | ✅  | ❌  |
 
 ## Adding the meta-openjdk-temurin layer to your build
 * Run 'git clone -b name-of-branch https://github.com/lucimber/meta-openjdk-temurin.git'
