@@ -27,7 +27,7 @@ The layer uses one git branch per OE-Core **major version**. Each branch officia
 | `dunfell`   | 3.x   | dunfell       | zeus, gatesgarth, hardknott, honister          |
 | `kirkstone` | 4.x   | kirkstone     | langdale, mickledore, nanbield                 |
 | `scarthgap` | 5.x   | scarthgap     | styhead, walnascar, whinlatter                 |
-| `main`      | 6.x   | —             | wrynose (only 6.x codename released so far)    |
+| `main`      | 6.x   | wrynose       | blacksail                                      |
 
 > Non-LTS codename entries in `LAYERSERIES_COMPAT_meta-openjdk-temurin` are **informal and untested**, offered for user convenience. *Primary support is focused on the LTS release in each major line.*
 
