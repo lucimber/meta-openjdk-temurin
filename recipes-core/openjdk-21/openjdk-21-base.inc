@@ -4,7 +4,13 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exceptio
 COMPATIBLE_HOST = "(x86_64|aarch64|riscv64).*-linux"
 DEPENDS = "alsa-lib freetype libx11 libxext libxi libxrender libxtst zlib"
 
-API_RELEASE_NAME = "jdk-${PV}"
+# x86-64-only respins (e.g. the CVE-2026-114938 "Java4Shell" fix releases)
+# can leave other architectures on the preceding release; JVM_BASE_PV
+# selects it. Sources always follow PV.
+JVM_BASE_PV ?= "${PV}"
+API_RELEASE_NAME = "jdk-${JVM_BASE_PV}"
+API_RELEASE_NAME:x86-64 = "jdk-${PV}"
+API_SRC_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
 API_ARCH:aarch64 = "aarch64"
 API_ARCH:x86-64 = "x64"
@@ -15,6 +21,6 @@ API_VENDOR = "eclipse"
 
 ADAPTED_PV_SRC = "${@d.getVar('PV').replace('-','').replace('+','_')}"
 SRC_URI = "https://api.adoptium.net/v3/binary/version/${API_RELEASE_NAME}/${API_OS}/${API_ARCH}/${API_IMAGE_TYPE}/${API_JVM_IMPL}/${API_HEAP_SIZE}/${API_VENDOR};name=binary;downloadfilename=${BPN}-${API_ARCH}-${PV}.tar.gz;subdir=${BPN}-${PV};striplevel=1 \
-           https://github.com/adoptium/temurin21-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK21U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
+           https://github.com/adoptium/temurin21-binaries/releases/download/${API_SRC_RELEASE_NAME}/OpenJDK21U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
 SRC_URI[binary.sha256sum] = "${JVM_CHECKSUM}"
 SRC_URI[sources.sha256sum] = "${JVM_SRC_CHECKSUM}"
