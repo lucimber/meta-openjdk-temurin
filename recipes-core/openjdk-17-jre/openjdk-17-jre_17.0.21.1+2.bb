@@ -8,7 +8,7 @@ OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "16080d055da0962fbd6b40f659a98a457cba3efa7ea716d5400cfebe8b935bf0"
+JVM_CHECKSUM:aarch64 = "1114f09d6174f54270c3117410b5e4022b43ebc0b43b751af08b927c55ed7bb5"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -20,7 +20,7 @@ JVM_RDEPENDS:aarch64 = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:arm = "0378bdf6769632b182b27ba4e53b17eaefefdbafa3845c15e1bd88a5aeec8442"
+JVM_CHECKSUM:arm = "a1f61c0a9a76af31e6954f93ba329650ce16e556d0508227a50c6203ff012357"
 JVM_RDEPENDS:arm = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -33,7 +33,7 @@ JVM_RDEPENDS:arm = " \
   libxtst (>= 1.2) \
   zlib (>= 1.2) \
 "
-JVM_CHECKSUM:x86_64 = "620cc0e7338f2722f3ed076ac65c0fafb575981426bac4e1970860e5e2d048f0"
+JVM_CHECKSUM:x86_64 = "5a092a0bc21de4c3d855480edd7945be9cfe157b38cdb84dac280511893bb009"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
   freetype (>= 2.13) \
@@ -48,7 +48,13 @@ JVM_RDEPENDS:x86_64 = " \
 
 RDEPENDS:${PN} = "${JVM_RDEPENDS}"
 
-API_RELEASE_NAME = "jdk-${PV}"
+# x86-64-only respins (e.g. the CVE-2026-114938 "Java4Shell" fix releases)
+# can leave other architectures on the preceding release; JVM_BASE_PV
+# selects it. Sources always follow PV.
+JVM_BASE_PV = "17.0.21+9"
+API_RELEASE_NAME = "jdk-${JVM_BASE_PV}"
+API_RELEASE_NAME:x86_64 = "jdk-${PV}"
+API_SRC_RELEASE_NAME = "jdk-${PV}"
 API_OS = "linux"
 API_ARCH:aarch64 = "aarch64"
 API_ARCH:arm = "arm"
@@ -67,10 +73,10 @@ python () {
   import re
   d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('+', '_'))
 }
-SRC_URI:append = " https://github.com/adoptium/temurin17-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK17U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
-SRC_URI[sources.sha256sum] = "111988b009f6856c717a1a55753bd72048adfd637ed8f232aaf6d96ec329a9d4"
+SRC_URI:append = " https://github.com/adoptium/temurin17-binaries/releases/download/${API_SRC_RELEASE_NAME}/OpenJDK17U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
+SRC_URI[sources.sha256sum] = "8f1f079f28e006318c4f79f0736dbc1300cb4a07f8b7e3ff4d8efc3ef914ea73"
 
-S = "${WORKDIR}/${BPN}-${PV}/jdk-17.0.10+7-jre"
+S = "${WORKDIR}/${BPN}-${PV}/${API_RELEASE_NAME}-jre"
 
 libdir_jre = "${libdir}/jvm/${BPN}"
 

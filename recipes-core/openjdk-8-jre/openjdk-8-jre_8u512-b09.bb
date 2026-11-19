@@ -1,43 +1,60 @@
-SUMMARY = "Prebuilt OpenJDK JRE for Java 21 offered by Adoptium."
+SUMMARY = "Prebuilt OpenJDK JRE for Java 8 offered by Adoptium."
 HOMEPAGE = "https://adoptium.net"
 LICENSE = "GPL-2.0-with-classpath-exception"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0-with-classpath-exception;md5=6133e6794362eff6641708cfcc075b80"
 
-COMPATIBLE_HOST = "(x86_64|aarch64).*-linux"
+COMPATIBLE_HOST = "(x86_64|arm|aarch64).*-linux"
 OVERRIDES = "${TARGET_ARCH}"
 
 DEPENDS = "patchelf-native"
 
-JVM_CHECKSUM:aarch64 = "64c78854184c92a4da5cda571c8e357043bfaf03a03434eef58550cc3410d8a4"
+JVM_SUBDIR:aarch64 = "jdk${PV}-jre"
+JVM_CHECKSUM:aarch64 = "9b45f49bc6e54cf9170aebe0ee45f48a833222325cb3b2d6d21220eee4c5207b"
 JVM_RDEPENDS:aarch64 = " \
   alsa-lib (>= 0.9) \
-  freetype (>= 2.13) \
-  glibc (>= 2.34) \
-  libx11 (>= 1.8) \
+  freetype (>= 2.11) \
+  glibc (>= 2.17) \
+  libgcc (>= 4.2) \
+  libx11 (>= 1.7) \
   libxext (>= 1.3) \
   libxi (>= 1.8) \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
-  zlib (>= 1.1.4) \
 "
-JVM_CHECKSUM:x86_64 = "51141204fe01a9f9dd74eab621d5eca7511eac67315c9975dbde5f2625bdca55"
+JVM_SUBDIR:arm = "jdk8u512-b09-aarch32-20261106-jre"
+JVM_CHECKSUM:arm = "bbe01d0683d3dcdd0bbdcc568d3d9123f719a4fa390208b3fe1ca6e1ef083923"
+JVM_RDEPENDS:arm = " \
+  alsa-lib (>= 0.9) \
+  freetype (>= 2.11) \
+  glibc (>= 2.17) \
+  libatomic (>= 1.0) \
+  libgcc (>= 3.5) \
+  libx11 (>= 1.7) \
+  libxext (>= 1.3) \
+  libxi (>= 1.8) \
+  libxrender (>= 0.9) \
+  libxtst (>= 1.2) \
+"
+JVM_SUBDIR:x86_64 = "jdk${PV}-jre"
+JVM_CHECKSUM:x86_64 = "57468dc8bfd71dd0578d9717e63a8c13b9efe0a2f2c85c2a13966d1c0f9b1e5f"
 JVM_RDEPENDS:x86_64 = " \
   alsa-lib (>= 0.9) \
-  freetype (>= 2.13) \
-  glibc (>= 2.34) \
-  libx11 (>= 1.8) \
+  freetype (>= 2.11) \
+  glibc (>= 2.17) \
+  libgcc (>= 4.2) \
+  libx11 (>= 1.7) \
   libxext (>= 1.3) \
   libxi (>= 1.8) \
   libxrender (>= 0.9) \
   libxtst (>= 1.2) \
-  zlib (>= 1.1.4) \
 "
 
 RDEPENDS:${PN} = "${JVM_RDEPENDS}"
 
-API_RELEASE_NAME = "jdk-${PV}"
+API_RELEASE_NAME = "jdk${PV}"
 API_OS = "linux"
 API_ARCH:aarch64 = "aarch64"
+API_ARCH:arm = "arm"
 API_ARCH:x86_64 = "x64"
 API_IMAGE_TYPE = "jre"
 API_JVM_IMPL = "hotspot"
@@ -51,12 +68,12 @@ SRC_URI[binary.sha256sum] = "${JVM_CHECKSUM}"
 ADAPTED_PV_SRC = ""
 python () {
   import re
-  d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('+', '_'))
+  d.setVar('ADAPTED_PV_SRC', d.getVar('PV').replace('-', ''))
 }
-SRC_URI:append = " https://github.com/adoptium/temurin21-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK21U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
-SRC_URI[sources.sha256sum] = "b23e3f90cbe8e83b69a7ce0db6ffd9849967f77b335567f3d732e3e2eb11ec17"
+SRC_URI:append = " https://github.com/adoptium/temurin8-binaries/releases/download/${API_RELEASE_NAME}/OpenJDK8U-jdk-sources_${ADAPTED_PV_SRC}.tar.gz;name=sources;downloadfilename=${BPN}-sources-${PV}.tar.gz;unpack=false"
+SRC_URI[sources.sha256sum] = "1c5749bc1ac6b6bfd9d9ba0e147e7d674ad2dbdb420153482f5c53a317dfeb2d"
 
-S = "${WORKDIR}/${BPN}-${PV}/jdk-${PV}-jre"
+S = "${WORKDIR}/${BPN}-${PV}/${JVM_SUBDIR}"
 
 libdir_jre = "${libdir}/jvm/${BPN}"
 
