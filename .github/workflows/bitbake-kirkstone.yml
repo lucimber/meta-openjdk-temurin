@@ -1,22 +1,117 @@
 name: Bitbake (kirkstone)
+
+# Jobs:
+#   parse - cheap: parse the layer against OE-Core. Runs everywhere, forks included.
+#   dco   - cheap: every PR commit must carry a Signed-off-by line.
+#   build - heavy: build the recipe matrix and smoke-test "java -version".
+#           Runs only in the upstream repository, never in forks. Pull requests
+#           from forks still get it, because PR workflows run in the context of
+#           the upstream repository (first-time contributors need approval).
+
 on:
   push:
-    branches:
-      - kirkstone
+    branches: [kirkstone]
+    paths-ignore: ['**.md', 'LICENSE*']
   pull_request:
-    branches:
-      - kirkstone
+    branches: [kirkstone]
+    paths-ignore: ['**.md', 'LICENSE*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  OE_CORE_REF: kirkstone
+  BITBAKE_REF: "2.0"
+  # Same interpreter as the local per-release venv; must satisfy the
+  # release's documented minimum host Python.
+  PYTHON_VERSION: "3.9"
+
 jobs:
+  parse:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Install software required by OpenEmbedded / Yocto
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gawk wget git diffstat unzip \
+            texinfo gcc build-essential chrpath socat cpio \
+            python3 python3-pip python3-pexpect xz-utils \
+            debianutils iputils-ping python3-git python3-jinja2 \
+            python3-subunit zstd lz4 file locales libacl1
+          sudo locale-gen en_US.UTF-8
+          # Ubuntu 24.04 restricts unprivileged user namespaces; BitBake needs them.
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Python modules used by BitBake / OE
+        run: pip install GitPython jinja2 pexpect subunit
+      - name: Checkout OE-Core
+        uses: actions/checkout@v7
+        with:
+          repository: openembedded/openembedded-core
+          ref: ${{ env.OE_CORE_REF }}
+          path: oe-core
+      - name: Checkout BitBake
+        uses: actions/checkout@v7
+        with:
+          repository: openembedded/bitbake
+          ref: ${{ env.BITBAKE_REF }}
+          path: oe-core/bitbake
+      - name: Checkout this layer
+        uses: actions/checkout@v7
+        with:
+          path: oe-core/meta-openjdk-temurin
+      - name: Parse layer
+        run: |
+          cd oe-core
+          source oe-init-build-env build > /dev/null
+          bitbake-layers add-layer ../meta-openjdk-temurin
+          bitbake -p
+          bitbake-layers show-recipes 'openjdk-*'
+
+  dco:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Check Signed-off-by on every commit
+        run: |
+          fail=0
+          for c in $(git rev-list --no-merges "${{ github.event.pull_request.base.sha }}..${{ github.event.pull_request.head.sha }}"); do
+            if ! git log -1 --format=%B "$c" | grep -q '^Signed-off-by: '; then
+              echo "::error::commit $(git log -1 --format='%h %s' "$c") lacks Signed-off-by (use git commit -s)"
+              fail=1
+            fi
+          done
+          exit $fail
+
   build:
+    needs: parse
+    if: github.repository == 'lucimber/meta-openjdk-temurin'
     strategy:
       matrix:
         recipe: [openjdk-8-jre, openjdk-8-jdk, openjdk-8-jdk-native, openjdk-11-jre, openjdk-17-jre, openjdk-21-jre, openjdk-25-jre]
         machine: [qemuarm, qemuarm64, qemuriscv64, qemux86-64]
+        # One scalar per dimension per entry; array values silently exclude nothing.
         exclude:
           - recipe: openjdk-8-jre
             machine: qemuriscv64
           - recipe: openjdk-8-jdk
             machine: qemuriscv64
+          # -native builds the same host JDK regardless of MACHINE: build it once.
+          - recipe: openjdk-8-jdk-native
+            machine: qemuarm
+          - recipe: openjdk-8-jdk-native
+            machine: qemuarm64
           - recipe: openjdk-8-jdk-native
             machine: qemuriscv64
           - recipe: openjdk-11-jre
@@ -32,106 +127,74 @@ jobs:
       - name: Install software required by OpenEmbedded / Yocto
         run: |
           sudo apt-get update
-          sudo apt-get install gawk wget git diffstat unzip \
+          sudo apt-get install -y gawk wget git diffstat unzip \
             texinfo gcc build-essential chrpath socat cpio \
             python3 python3-pip python3-pexpect xz-utils \
             debianutils iputils-ping python3-git python3-jinja2 \
-            python3-subunit zstd liblz4-tool file locales libacl1
+            python3-subunit zstd lz4 file locales libacl1
           sudo locale-gen en_US.UTF-8
+          # Ubuntu 24.04 restricts unprivileged user namespaces; BitBake needs them.
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 || true
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install Python modules used by BitBake / OE
+        run: pip install GitPython jinja2 pexpect subunit
       - name: Checkout OE-Core
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           repository: openembedded/openembedded-core
-          ref: kirkstone
+          ref: ${{ env.OE_CORE_REF }}
           path: oe-core
-      - name: Checkout Bitbake
-        uses: actions/checkout@v4
+      - name: Checkout BitBake
+        uses: actions/checkout@v7
         with:
           repository: openembedded/bitbake
-          ref: '2.0'
+          ref: ${{ env.BITBAKE_REF }}
           path: oe-core/bitbake
-      - name: Checkout sources of this project
-        uses: actions/checkout@v4
+      - name: Checkout this layer
+        uses: actions/checkout@v7
         with:
-          ref: ${{ github.head_ref }}
           path: oe-core/meta-openjdk-temurin
-      - name: Replace config of build-environment
+      - name: Set up build environment
         run: |
           cd oe-core
-          source oe-init-build-env build > /dev/null 2>&1
-          mv -v ../meta-openjdk-temurin/.github/workflows/bitbake-kirkstone-local.conf \
-            conf/local.conf
-      - name: Add layer to build-environment
-        run: |
-          cd oe-core
-          source oe-init-build-env build > /dev/null 2>&1
+          source oe-init-build-env build > /dev/null
+          cp -v ../meta-openjdk-temurin/.github/workflows/bitbake-kirkstone-local.conf conf/local.conf
           bitbake-layers add-layer ../meta-openjdk-temurin
-      - name: Restore cached sstate of Bitbake
-        id: cache-bitbake-sstate-restore
-        uses: actions/cache/restore@v4
+      - name: Restore sstate cache
+        id: sstate
+        uses: actions/cache/restore@v6
         with:
           path: oe-core/build/sstate-cache
-          key: bitbake-sstate_kirkstone_${{ matrix.machine }}
-      - name: Build ${{ matrix.recipe }} with Bitbake
+          key: sstate-kirkstone-${{ matrix.machine }}-${{ github.run_id }}
+          restore-keys: sstate-kirkstone-${{ matrix.machine }}-
+      - name: Build ${{ matrix.recipe }}
         run: |
           cd oe-core
-          source oe-init-build-env build > /dev/null 2>&1
+          source oe-init-build-env build > /dev/null
           MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }}
-      - name: Register qemu-user handlers for non-native archs
-        if: contains(matrix.recipe, '-jre') && matrix.machine != 'qemux86-64'
-        uses: docker/setup-qemu-action@v3
+      - name: Register qemu-user for the target architecture
+        if: ${{ !endsWith(matrix.recipe, '-native') && matrix.machine != 'qemux86-64' }}
+        uses: docker/setup-qemu-action@v4
         with:
           platforms: arm64,arm,riscv64
-      - name: Smoke test — java -version
-        if: contains(matrix.recipe, '-jre')
+      - name: Smoke test (target) - java -version
+        if: ${{ !endsWith(matrix.recipe, '-native') }}
         run: |
-          set -euo pipefail
-
-          # Locate the primary ipk (exclude -dbg / -dev / -doc splits).
-          ipk=$(find oe-core/build/tmp*/deploy/ipk \
-                  -name "${{ matrix.recipe }}_*.ipk" \
-                  ! -name '*-dbg*' ! -name '*-dev*' ! -name '*-doc*' \
-                  | head -1)
-          [ -n "$ipk" ] || { echo "error: no ipk produced for ${{ matrix.recipe }}"; exit 1; }
-
-          # Extract the ipk (ar archive containing data.tar.*) into a sysroot.
-          work=$(mktemp -d)
-          ( cd "$work" && ar x "$ipk" && tar xf data.tar.* )
-
-          # Map the OE MACHINE to the Docker --platform qemu-user emulates.
-          case "${{ matrix.machine }}" in
-            qemux86-64)  plat=linux/amd64   ;;
-            qemuarm64)   plat=linux/arm64   ;;
-            qemuarm)     plat=linux/arm/v7  ;;
-            qemuriscv64) plat=linux/riscv64 ;;
-            *) echo "error: unknown machine ${{ matrix.machine }}"; exit 1 ;;
-          esac
-
-          # Run the extracted java under a target-arch glibc. The Temurin
-          # binary's ELF interpreter is patched to ${base_libdir}/ld-linux-*,
-          # which under usrmerge-enabled OE distros is /usr/lib/ld-linux-*.
-          # Debian trixie keeps the real file under a multiarch triplet path,
-          # so we create a compat symlink at /usr/lib/ld-linux-* (and /lib/
-          # for belt-and-braces) before invoking java.
-          docker run --rm --platform "$plat" \
-            -v "$work:/rootfs:ro" \
-            debian:trixie-slim \
-            sh -ec '
-              set -eu
-              for real in /lib/*/ld-linux-* /lib64/ld-linux-* /usr/lib/*/ld-linux-*; do
-                [ -f "$real" ] || continue
-                base=$(basename "$real")
-                [ -e "/usr/lib/$base" ] || ln -sf "$real" "/usr/lib/$base"
-                [ -e "/lib/$base" ]     || ln -sf "$real" "/lib/$base"
-              done
-              java=$(find /rootfs/usr/lib/jvm -name java -type f -executable | head -1)
-              [ -n "$java" ] || { echo "error: no java binary in extracted ipk"; exit 1; }
-              "$java" -version
-            '
-      - name: Save sstate of Bitbake
-        id: cache-bitbake-sstate-save
-        if: steps.cache-bitbake-sstate-restore.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+          oe-core/meta-openjdk-temurin/.github/scripts/smoke-java-version.sh \
+            oe-core/build/tmp*/deploy/ipk ${{ matrix.recipe }} ${{ matrix.machine }}
+      - name: Smoke test (native) - java -version
+        if: ${{ endsWith(matrix.recipe, '-native') }}
+        run: |
+          cd oe-core
+          source oe-init-build-env build > /dev/null
+          MACHINE=${{ matrix.machine }} bitbake ${{ matrix.recipe }} -c addto_recipe_sysroot
+          MACHINE=${{ matrix.machine }} oe-run-native ${{ matrix.recipe }} java -version
+      - name: Save sstate cache
+        if: github.event_name == 'push' && always() && steps.sstate.outcome == 'success'
+        uses: actions/cache/save@v6
         with:
           path: oe-core/build/sstate-cache
-          key: ${{ steps.cache-bitbake-sstate-restore.outputs.cache-primary-key }}
+          key: sstate-kirkstone-${{ matrix.machine }}-${{ github.run_id }}
