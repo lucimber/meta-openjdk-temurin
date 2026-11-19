@@ -26,13 +26,20 @@ esac
 work=$(mktemp -d)
 trap 'rm -rf "$work"' EXIT
 mkdir "$work/rootfs"
-( cd "$work" && ar x "$ipk" && tar -C rootfs -xf data.tar.* )
+( cd "$work" && ar x "$ipk" && tar -C rootfs -xf data.tar.* && tar -xf control.tar.* ./control )
+# Runtime dependencies OE recorded for the package (shlibdeps etc.).
+grep '^Depends:' "$work/control" || echo "Depends: (none)"
 
 # The JVM's ELF interpreter is patched to ${base_libdir}/ld-linux-*
 # (/lib or /usr/lib depending on usrmerge). Debian keeps the real loader
 # under a multiarch path, so provide compat links in both places.
 "${CONTAINER_ENGINE:-docker}" run --rm --platform "$plat" -v "$work/rootfs:/rootfs:ro,z" \
   debian:trixie-slim sh -euc '
+    # Debian slim lacks libatomic, which some JVM builds (e.g. Java 8 on
+    # 32-bit arm) link against; on an OE image shlibdeps pulls it in.
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get -qq update >/dev/null
+    apt-get -qq install -y --no-install-recommends libatomic1 >/dev/null
     for real in /lib/*/ld-linux* /lib64/ld-linux* /usr/lib/*/ld-linux*; do
       [ -f "$real" ] || continue
       base=$(basename "$real")
